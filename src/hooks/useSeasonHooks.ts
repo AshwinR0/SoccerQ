@@ -1,0 +1,70 @@
+import { useSeasonContext } from '@/contexts/SeasonContext';
+import { useSupabaseQuery } from './useSupabaseQuery';
+import {
+  getTeamsBySeason,
+  getPlayersBySeason,
+  getMatchesBySeason,
+  getStandingsBySeason,
+  getTopScorersBySeason,
+  getGoldenGloveBySeason,
+} from '@/services/api';
+
+// A helper to get the current season ID
+const useCurrentSeasonId = () => {
+  const { currentSeason } = useSeasonContext();
+  return currentSeason?.id;
+};
+
+// Hook to fetch only teams
+export const useTeams = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getTeamsBySeason,
+  });
+};
+
+// Hook to fetch only players
+export const usePlayers = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getPlayersBySeason,
+  });
+};
+
+// Hook to fetch only matches
+export const useMatches = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getMatchesBySeason,
+  });
+};
+
+// Hook to fetch only standings
+export const useStandings = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getStandingsBySeason,
+  });
+};
+
+// Hook to fetch only top scorers
+export const useTopScorers = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getTopScorersBySeason,
+  });
+};
+
+// Hook to fetch only golden glove contenders
+export const useGoldenGlove = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getGoldenGloveBySeason,
+  });
+};

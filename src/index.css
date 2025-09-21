@@ -1,0 +1,260 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Football Tournament Manager Design System
+   Football-inspired color palette with deep greens, gold accents, and clean presentation
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Base colors - clean and modern */
+    --background: 0 0% 98%;
+    --foreground: 140 8% 12%;
+
+    /* Card system - elevated surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 140 8% 12%;
+
+    /* Popover system */
+    --popover: 0 0% 100%;
+    --popover-foreground: 140 8% 12%;
+
+    /* Primary - Football pitch green */
+    --primary: 140 60% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 140 60% 35%;
+
+    /* Secondary - Light green tones */
+    --secondary: 140 20% 94%;
+    --secondary-foreground: 140 60% 25%;
+
+    /* Muted - Subtle backgrounds */
+    --muted: 140 15% 96%;
+    --muted-foreground: 140 8% 45%;
+
+    /* Accent - Gold for highlights */
+    --accent: 45 90% 55%;
+    --accent-foreground: 140 8% 12%;
+
+    /* Status colors */
+    --success: 140 60% 45%;
+    --success-foreground: 0 0% 98%;
+    --warning: 45 90% 55%;
+    --warning-foreground: 140 8% 12%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Interactive elements */
+    --border: 140 15% 88%;
+    --input: 140 15% 94%;
+    --ring: 140 60% 25%;
+
+    /* Football-specific gradients */
+    --gradient-pitch: linear-gradient(135deg, hsl(140 60% 25%), hsl(140 60% 35%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(140 15% 98%));
+    --gradient-gold: linear-gradient(135deg, hsl(45 90% 55%), hsl(45 90% 65%));
+
+    /* Shadows */
+    --shadow-card: 0 4px 12px hsl(140 20% 20% / 0.08);
+    --shadow-match: 0 8px 24px hsl(140 30% 20% / 0.12);
+    --shadow-glow: 0 0 20px hsl(140 60% 35% / 0.3);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    /* Dark theme - midnight football atmosphere */
+    --background: 140 15% 8%;
+    --foreground: 140 10% 92%;
+
+    /* Dark cards with subtle green tint */
+    --card: 140 12% 12%;
+    --card-foreground: 140 10% 92%;
+
+    /* Dark popovers */
+    --popover: 140 12% 12%;
+    --popover-foreground: 140 10% 92%;
+
+    /* Bright green primary for contrast */
+    --primary: 140 60% 45%;
+    --primary-foreground: 140 15% 8%;
+    --primary-glow: 140 60% 55%;
+
+    /* Dark secondary tones */
+    --secondary: 140 15% 18%;
+    --secondary-foreground: 140 10% 92%;
+
+    /* Dark muted backgrounds */
+    --muted: 140 12% 15%;
+    --muted-foreground: 140 8% 65%;
+
+    /* Gold accent remains vibrant */
+    --accent: 45 90% 60%;
+    --accent-foreground: 140 15% 8%;
+
+    /* Dark status colors */
+    --success: 140 60% 50%;
+    --success-foreground: 140 15% 8%;
+    --warning: 45 90% 60%;
+    --warning-foreground: 140 15% 8%;
+    --destructive: 0 70% 55%;
+    --destructive-foreground: 140 15% 8%;
+
+    /* Dark interactive elements */
+    --border: 140 15% 22%;
+    --input: 140 12% 15%;
+    --ring: 140 60% 45%;
+
+    /* Dark gradients */
+    --gradient-pitch: linear-gradient(135deg, hsl(140 60% 45%), hsl(140 60% 55%));
+    --gradient-card: linear-gradient(145deg, hsl(140 12% 12%), hsl(140 15% 15%));
+    --gradient-gold: linear-gradient(135deg, hsl(45 90% 60%), hsl(45 90% 70%));
+
+    /* Enhanced shadows for dark mode */
+    --shadow-card: 0 4px 12px hsl(140 60% 10% / 0.3);
+    --shadow-match: 0 8px 24px hsl(140 60% 10% / 0.4);
+    --shadow-glow: 0 0 30px hsl(140 60% 45% / 0.4);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  /* Match card variants */
+  .match-card {
+    @apply bg-card border border-border rounded-lg p-4 shadow-sm hover:shadow-md transition-all duration-200;
+    box-shadow: var(--shadow-card);
+  }
+
+  .match-card-featured {
+    @apply bg-gradient-to-br from-primary/5 to-primary-glow/5 border-primary/20 p-4;
+    box-shadow: var(--shadow-match);
+  }
+
+  /* Team card styles */
+  .team-card {
+    @apply bg-card border border-border rounded-lg overflow-hidden hover:shadow-md transition-all duration-200;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Player card styles */
+  .player-card {
+    @apply bg-card border border-border rounded-lg p-4 hover:shadow-md transition-all duration-200;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Standings table */
+  .standings-row {
+    @apply border-b border-border hover:bg-muted/50 transition-colors;
+  }
+
+  /* Search and filter styles */
+  .search-container {
+    @apply bg-card border border-border rounded-lg shadow-sm;
+  }
+
+  /* Gradient text effects */
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-accent to-accent/80 bg-clip-text text-transparent font-bold;
+  }
+
+  .text-gradient-pitch {
+    @apply bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent font-bold;
+  }
+
+  /* Animation utilities */
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile-first responsive utilities */
+@media (max-width: 768px) {
+  .mobile-padding {
+    @apply px-4 py-2;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+}
+
+/* Touch-friendly interactive elements */
+.touch-target {
+  @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+}
