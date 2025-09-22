@@ -1,5 +1,8 @@
 import { supabase } from '@/lib/supabaseClient';
-import { Team, Player, Match, Standing, TopScorer, GoldenGlove } from '../types';
+import { Team, Player, Match, Standing, TopScorer, GoldenGlove, Season } from '../types';
+// Fetch Seasons
+export const getSeasons = () =>
+  fetchData<Season[]>(supabase.from('seasons').select('*'));
 
 // Helper for type safety
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
