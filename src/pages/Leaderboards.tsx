@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trophy, Target, Shield, Award, TrendingUp } from 'lucide-react';
+import { Target, Shield, Award, TrendingUp, FileQuestionIcon, Hand, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTopScorers } from "@/hooks/useSeasonHooks";
 import { useGoldenGlove } from '@/hooks/useSeasonHooks';
@@ -79,14 +79,14 @@ const Leaderboards = () => {
           <div className="match-card overflow-hidden">
             <div className="bg-gradient-pitch from-destructive to-destructive/80 p-4 text-destructive-foreground">
               <div className="flex items-center space-x-2">
-                <Target className="h-6 w-6" />
+                <Zap className="h-6 w-6" />
                 <h2 className="text-xl font-bold">Top Goal Scorers</h2>
               </div>
               <p className="text-destructive-foreground/80 text-sm">Players with the most goals this tournament</p>
             </div>
-            
+
             {/* Top 3 Highlight */}
-            <div className="p-6 bg-gradient-to-br from-muted/30 to-muted/10">
+            {topScorers?.length > 0 ? <div className="p-6 bg-gradient-to-br from-muted/30 to-muted/10">
               <div className="grid md:grid-cols-3 gap-6">
                 {topScorers?.slice(0, 3).map((scorer) => (
                   <div key={scorer.player.id} className="text-center">
@@ -113,10 +113,18 @@ const Leaderboards = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> :
+              <div className="match-card text-center py-12">
+                <FileQuestionIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No stats found</h3>
+                <p className="text-muted-foreground">
+                  No stats available at the moment
+                </p>
+              </div>
+            }
 
             {/* Full Rankings */}
-            <div className="p-4">
+            {topScorers?.length > 0 && <div className="p-4">
               <h3 className="font-semibold text-foreground mb-4">Complete Rankings</h3>
               <div className="space-y-3">
                 {topScorers?.map((scorer) => (
@@ -127,23 +135,23 @@ const Leaderboards = () => {
                       </span>
                       <span className="ml-1">{getRankIcon(scorer.rank)}</span>
                     </div>
-                    
+
                     <img
                       src={scorer.player.profile_photo_url}
                       alt={scorer.player.name}
                       className="w-14 h-14 object-contain"
                     />
-                    
+
                     <div className="flex-1">
                       <div className="font-semibold text-foreground">{scorer.player.name}</div>
                       <div className="text-sm text-muted-foreground">{scorer?.team?.name} • {scorer.player.position}</div>
                     </div>
-                    
+
                     <div className="text-right">
                       <div className="text-xl font-bold text-foreground">{scorer.goals}</div>
                       <div className="text-xs text-muted-foreground">goals</div>
                     </div>
-                    
+
                     <div className="text-right text-sm text-muted-foreground">
                       <div>{scorer.assists} assists</div>
                       <div>{scorer.player.appearances} apps</div>
@@ -151,7 +159,7 @@ const Leaderboards = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div>}
           </div>
         </div>
       )}
@@ -167,8 +175,8 @@ const Leaderboards = () => {
               </div>
               <p className="text-destructive-foreground text-sm">Players creating the most scoring opportunities</p>
             </div>
-            
-            <div className="p-4">
+
+            {assistsLeaderboard?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
                 {assistsLeaderboard?.map((player) => (
                   <div key={player.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
@@ -178,23 +186,23 @@ const Leaderboards = () => {
                       </span>
                       <span className="ml-1">{getRankIcon(player.rank)}</span>
                     </div>
-                    
+
                     <img
                       src={player.player.profile_photo_url}
                       alt={player.player.name}
                       className="w-20 h-20 object-contain"
                     />
-                    
+
                     <div className="flex-1">
                       <div className="font-semibold text-foreground">{player.player.name}</div>
                       <div className="text-sm text-muted-foreground">{player.team.name} • {player.player.position}</div>
                     </div>
-                    
+
                     <div className="text-right">
                       <div className="text-xl font-bold text-foreground">{player.assists}</div>
                       <div className="text-xs text-muted-foreground">assists</div>
                     </div>
-                    
+
                     <div className="text-right text-sm text-muted-foreground">
                       <div>{player.goals} goals</div>
                       <div>{player.player.appearances} apps</div>
@@ -202,7 +210,15 @@ const Leaderboards = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> :
+              <div className="match-card text-center py-12">
+                <FileQuestionIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No stats found</h3>
+                <p className="text-muted-foreground">
+                  No stats available at the moment
+                </p>
+              </div>
+            }
           </div>
         </div>
       )}
@@ -213,13 +229,13 @@ const Leaderboards = () => {
           <div className="match-card overflow-hidden">
             <div className="bg-gradient-to-r from-primary to-primary-glow p-4 text-primary-foreground">
               <div className="flex items-center space-x-2">
-                <Shield className="h-6 w-6" />
+                <Hand className="h-6 w-6" />
                 <h2 className="text-xl font-bold">Golden Glove</h2>
               </div>
               <p className="text-primary-foreground/80 text-sm">Top performing goalkeepers this tournament</p>
             </div>
-            
-            <div className="p-4">
+
+            {goldenGlove?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
                 {goldenGlove?.map((keeper) => (
                   <div key={keeper.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
@@ -229,23 +245,23 @@ const Leaderboards = () => {
                       </span>
                       <span className="ml-1">{getRankIcon(keeper.rank)}</span>
                     </div>
-                    
+
                     <img
                       src={keeper.player.profile_photo_url}
                       alt={keeper?.player?.name}
                       className="w-16 h-16 object-contain"
                     />
-                    
+
                     <div className="flex-1">
                       <div className="font-semibold text-foreground">{keeper.player.name}</div>
                       <div className="text-sm text-muted-foreground">{keeper?.team?.name} • Goalkeeper</div>
                     </div>
-                    
+
                     <div className="text-right">
                       <div className="text-xl font-bold text-foreground">{keeper.saves}</div>
                       <div className="text-xs text-muted-foreground">saves</div>
                     </div>
-                    
+
                     <div className="text-right text-sm text-muted-foreground">
                       <div>{keeper.clean_sheets} clean sheets</div>
                       <div>{keeper.player.appearances} apps</div>
@@ -253,7 +269,15 @@ const Leaderboards = () => {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> :
+              <div className="match-card text-center py-12">
+                <FileQuestionIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No stats found</h3>
+                <p className="text-muted-foreground">
+                  No stats available at the moment
+                </p>
+              </div>
+            }
           </div>
         </div>
       )}
@@ -269,7 +293,7 @@ const Leaderboards = () => {
             </div>
             <div className="text-sm text-muted-foreground">Total Goals</div>
           </div>
-          
+
           <div className="text-center">
             <Award className="h-8 w-8 text-accent mx-auto mb-2" />
             <div className="text-2xl font-bold text-foreground">
@@ -277,7 +301,7 @@ const Leaderboards = () => {
             </div>
             <div className="text-sm text-muted-foreground">Total Assists</div>
           </div>
-          
+
           <div className="text-center">
             <Shield className="h-8 w-8 text-success mx-auto mb-2" />
             <div className="text-2xl font-bold text-foreground">
@@ -285,7 +309,7 @@ const Leaderboards = () => {
             </div>
             <div className="text-sm text-muted-foreground">Clean Sheets</div>
           </div>
-          
+
           <div className="text-center">
             <Target className="h-8 w-8 text-warning mx-auto mb-2" />
             <div className="text-2xl font-bold text-foreground">

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { Search, User, Target, Shield, Users } from 'lucide-react';
+import { Search, User, Target, Shield, Users, Hand, Zap } from 'lucide-react';
 import PlayerCard from '@/components/cards/PlayerCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -21,10 +21,10 @@ const Players = () => {
 
   const positions = [
     { key: 'all' as const, label: 'All Positions', icon: Users },
-    { key: 'Forward' as const, label: 'Forwards', icon: Target },
+    { key: 'Forward' as const, label: 'Forwards', icon: Zap },
     { key: 'Midfielder' as const, label: 'Midfielders', icon: Users },
     { key: 'Defender' as const, label: 'Defenders', icon: Shield },
-    { key: 'Goalkeeper' as const, label: 'Goalkeepers', icon: Shield }
+    { key: 'Goalkeeper' as const, label: 'Goalkeepers', icon: Hand }
   ];
 
   const filteredAndSortedPlayers = useMemo(() => {

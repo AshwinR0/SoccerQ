@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Trophy, TrendingUp, Target, Shield } from 'lucide-react';
+import { Trophy, TrendingUp, Target, Shield, FileQuestionIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useStandings } from "@/hooks/useSeasonHooks";
 
@@ -56,9 +56,9 @@ const Standings = () => {
               <h2 className="text-xl font-bold">Tournament Table</h2>
               <p className="text-primary-foreground/80 text-sm">Current standings based on points and goal difference</p>
             </div>
-            
+
             {/* Desktop Table */}
-            <div className="hidden md:block overflow-x-auto">
+            {standings?.length > 0 ? <div className="hidden md:block overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="standings-row bg-muted/50">
@@ -87,7 +87,7 @@ const Standings = () => {
                       </td>
                       <td className="p-3">
                         <div className="flex items-center space-x-3">
-                          <div 
+                          <div
                             className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
                             style={{ backgroundColor: standing.team.colors.primary }}
                           >
@@ -113,7 +113,15 @@ const Standings = () => {
                   ))}
                 </tbody>
               </table>
-            </div>
+            </div> :
+              <div className="match-card text-center py-12">
+                <FileQuestionIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-lg font-semibold text-foreground mb-2">No teams found</h3>
+                <p className="text-muted-foreground">
+                  No teams available at the moment
+                </p>
+              </div>
+            }
 
             {/* Mobile Cards */}
             <div className="md:hidden space-y-4 p-4">
@@ -127,7 +135,7 @@ const Standings = () => {
                         </span>
                         <span>{getPositionIndicator(standing.position)}</span>
                       </div>
-                      <div 
+                      <div
                         className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
                         style={{ backgroundColor: standing.team.colors.primary }}
                       >
@@ -143,7 +151,7 @@ const Standings = () => {
                       <div className="text-xs text-muted-foreground">points</div>
                     </div>
                   </div>
-                  
+
                   <div className="grid grid-cols-4 gap-4 text-center text-sm">
                     <div>
                       <div className="text-foreground font-semibold">{standing.played}</div>
@@ -162,7 +170,7 @@ const Standings = () => {
                       <div className="text-muted-foreground">L</div>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between mt-3 pt-3 border-t border-border text-sm">
                     <span className="text-muted-foreground">Goals: {standing.goals_for}-{standing.goals_against}</span>
                     <span className={`font-semibold ${standing.goal_difference >= 0 ? 'text-success' : 'text-destructive'}`}>
@@ -206,7 +214,7 @@ const Standings = () => {
             {standings?.map((standing) => (
               <div key={standing.team.id} className="match-card p-6">
                 <div className="flex items-center space-x-3 mb-4">
-                  <div 
+                  <div
                     className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold"
                     style={{ backgroundColor: standing.team.colors.primary }}
                   >
@@ -228,7 +236,7 @@ const Standings = () => {
                     </div>
                     <div className="text-center p-3 bg-muted/50 rounded-lg">
                       <Target className="h-5 w-5 text-success mx-auto mb-1" />
-                      <div className="font-bold text-foreground">{Math.round((standing.wins / standing.played) * 100)}%</div>
+                      <div className="font-bold text-foreground">{standing.played > 0 ? Math.round((standing.wins / standing.played) * 100) : 0}%</div>
                       <div className="text-xs text-muted-foreground">Win Rate</div>
                     </div>
                   </div>

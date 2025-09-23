@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Users, Trophy, TrendingUp } from 'lucide-react';
+import { Search, FileQuestionIcon, Users, Trophy, TrendingUp } from 'lucide-react';
 import TeamCard from '@/components/cards/TeamCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -116,7 +116,7 @@ const Teams = () => {
         </div>
       ) : (
         <div className="match-card text-center py-12">
-          <Users className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+          <FileQuestionIcon className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-foreground mb-2">No teams found</h3>
           <p className="text-muted-foreground">
             {searchQuery 
