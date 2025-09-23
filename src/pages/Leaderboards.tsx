@@ -17,9 +17,9 @@ const Leaderboards = () => {
   const [activeTab, setActiveTab] = useState<TabKey>('scorers');
 
   const tabs: { key: TabKey; label: string; icon: React.ElementType }[] = [
-    { key: 'scorers', label: 'Top Scorers', icon: Target },
+    { key: 'scorers', label: 'Top Scorers', icon: Zap },
     { key: 'assists', label: 'Most Assists', icon: Award },
-    { key: 'keepers', label: 'Golden Glove', icon: Shield }
+    { key: 'keepers', label: 'Golden Glove', icon: Hand }
   ];
 
   // Calculate assists leaderboard
