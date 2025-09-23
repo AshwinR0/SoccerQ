@@ -61,8 +61,8 @@ const Home = () => {
       >
         <div className="relative z-10 max-w-4xl mx-auto px-4 py-16">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
-            Football Tournament
-            <span className="block text-accent mt-2">Manager</span>
+            Dribble/SoccerQ
+            <span className="block text-accent mt-2">Dashboard</span>
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
             Track live matches, team standings, and player statistics in real-time

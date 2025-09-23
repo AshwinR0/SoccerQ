@@ -72,14 +72,14 @@ const Navigation = () => {
 
           {/* Right Side Actions */}
           <div className="flex items-center space-x-2">
-            <Button
+            {/* <Button
               variant="ghost"
               size="icon"
               className="touch-target"
-              onClick={() => {/* TODO: Implement search */}}
+              onClick={() => {}}
             >
               <Search className="h-4 w-4" />
-            </Button>
+            </Button> */}
             
             <Button
               variant="ghost"

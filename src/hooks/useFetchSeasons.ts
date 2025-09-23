@@ -13,8 +13,8 @@ export const useFetchSeasons = () => {
       setLoading(true);
       try {
         const fetchedSeasons = await getSeasons();
-        setSeasons(fetchedSeasons);
-        const activeSeason = fetchedSeasons.find(season => season.isActive) || fetchedSeasons[0];
+        setSeasons([...fetchedSeasons].reverse());
+        const activeSeason = fetchedSeasons.reverse().find(season => season.isActive) || fetchedSeasons[0];
         if (activeSeason) {
           setCurrentSeason(activeSeason);
         }
