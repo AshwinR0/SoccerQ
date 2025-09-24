@@ -21,6 +21,8 @@ const Matches = () => {
     { key: 'Live' as const, label: 'Live', count: matches?.filter(m => m.status === 'Live').length }
   ];
 
+  console.log(filters);
+
   const filteredMatches = matches?.filter(match => {
     const matchesSearch = searchQuery === '' || 
       match.homeTeam.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
