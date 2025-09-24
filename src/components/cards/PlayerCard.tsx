@@ -48,9 +48,15 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
         <div className="flex items-center space-x-4 mb-4">
           <div className="relative">
             <img
-              src={player.profile_photo_url}
+              src={player.profile_photo_url || '/public/placeholder_player.png'}
               alt={player.name}
               className="w-48 h-60 object-contain"
+              onError={e => {
+                const target = e.currentTarget;
+                if (target.src !== window.location.origin + '/public/placeholder_player.png') {
+                  target.src = '/public/placeholder_player.png';
+                }
+              }}
             />
             <div 
               className="absolute bottom-4 right-4 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"

@@ -50,7 +50,7 @@ const Home = () => {
   return (
     <div className="animate-fade-in">
       {/* Hero Section with Background */}
-      <div 
+      <div
         className="relative min-h-[60vh] flex items-center justify-center text-center"
         style={{
           backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url(${heroImage})`,
@@ -80,7 +80,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        
+
         {/* Overlay gradient for better text readability */}
         <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent"></div>
       </div>
@@ -100,133 +100,139 @@ const Home = () => {
         </section>
 
         {/* Upcoming Matches */}
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-foreground">Upcoming Matches</h2>
-          <Link to="/matches">
-            <Button variant="outline" size="sm">
-              View All
-            </Button>
-          </Link>
-        </div>
-        
-        {upcomingMatches?.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {upcomingMatches?.map((match, index) => (
-              <MatchCard 
-                key={match.id} 
-                match={match} 
-                featured={index === 0}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="match-card text-center py-8">
-            <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <p className="text-muted-foreground">No upcoming matches scheduled</p>
-          </div>
-        )}
-      </section>
-
-      {/* Recent Results */}
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-foreground">Recent Results</h2>
-          <Link to="/matches?filter=completed">
-            <Button variant="outline" size="sm">
-              View All Results
-            </Button>
-          </Link>
-        </div>
-        
-        <div className="grid gap-4 md:grid-cols-2">
-          {recentMatches?.map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
-        </div>
-      </section>
-
-      {/* League Leaders */}
-      <div className="grid gap-8 lg:grid-cols-2">
-        {/* Top Teams */}
         <section>
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-foreground">League Table</h2>
-            <Link to="/standings">
-              <Button variant="outline" size="sm">
-                Full Table
-              </Button>
-            </Link>
-          </div>
-          
-          <div className="match-card">
-            <div className="space-y-4">
-              {topTeams?.map((standing, index) => (
-                <div key={standing?.team?.id} className="flex items-center space-x-4">
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <span className={`font-bold ${index === 0 ? 'text-gradient-gold' : 'text-muted-foreground'}`}>
-                      {standing?.position}
-                    </span>
-                  </div>
-                  <div 
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                    style={{ backgroundColor: standing.team.colors.primary }}
-                  >
-                    {standing.team.short_name}
-                  </div>
-                  <div className="flex-1">
-                    <div className="font-semibold text-foreground">{standing.team.name}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-foreground">{standing.points}</div>
-                    <div className="text-xs text-muted-foreground">pts</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Top Scorers */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-foreground">Top Scorers</h2>
-            <Link to="/leaderboards">
+            <h2 className="text-2xl font-bold text-foreground">Upcoming Matches</h2>
+            <Link to="/matches">
               <Button variant="outline" size="sm">
                 View All
               </Button>
             </Link>
           </div>
-          
-          <div className="match-card">
-            <div className="space-y-4">
-              {topThreeScorers?.map((scorer, index) => (
-                <div key={scorer.player.id} className="flex items-center space-x-4">
-                  <div className="w-8 h-8 flex items-center justify-center">
-                    <span className={`font-bold ${index === 0 ? 'text-gradient-gold' : 'text-muted-foreground'}`}>
-                      {scorer.rank}
-                    </span>
-                  </div>
-                  <img
-                    src={scorer.player.profile_photo_url}
-                    alt={scorer.player.name}
-                    className="w-12 h-12 object-contain border-border"
-                  />
-                  <div className="flex-1">
-                    <div className="font-semibold text-foreground">{scorer.player.name}</div>
-                    <div className="text-sm text-muted-foreground">{scorer?.team?.short_name}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-bold text-foreground">{scorer.goals}</div>
-                    <div className="text-xs text-muted-foreground">goals</div>
-                  </div>
-                </div>
+
+          {upcomingMatches?.length > 0 ? (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {upcomingMatches?.map((match, index) => (
+                <MatchCard
+                  key={match.id}
+                  match={match}
+                  featured={index === 0}
+                />
               ))}
             </div>
+          ) : (
+            <div className="match-card text-center py-8">
+              <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+              <p className="text-muted-foreground">No upcoming matches scheduled</p>
+            </div>
+          )}
+        </section>
+
+        {/* Recent Results */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-foreground">Recent Results</h2>
+            <Link to="/matches?filter=completed">
+              <Button variant="outline" size="sm">
+                View All Results
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2">
+            {recentMatches?.map((match) => (
+              <MatchCard key={match.id} match={match} />
+            ))}
           </div>
         </section>
+
+        {/* League Leaders */}
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Top Teams */}
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-foreground">League Table</h2>
+              <Link to="/standings">
+                <Button variant="outline" size="sm">
+                  Full Table
+                </Button>
+              </Link>
+            </div>
+
+            <div className="match-card">
+              <div className="space-y-4">
+                {topTeams?.map((standing, index) => (
+                  <div key={standing?.team?.id} className="flex items-center space-x-4">
+                    <div className="w-8 h-8 flex items-center justify-center">
+                      <span className={`font-bold ${index === 0 ? 'text-gradient-gold' : 'text-muted-foreground'}`}>
+                        {standing?.position}
+                      </span>
+                    </div>
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs"
+                      style={{ backgroundColor: standing.team.colors.primary }}
+                    >
+                      {standing.team.short_name}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-semibold text-foreground">{standing.team.name}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-foreground">{standing.points}</div>
+                      <div className="text-xs text-muted-foreground">pts</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Top Scorers */}
+          <section>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-foreground">Top Scorers</h2>
+              <Link to="/leaderboards">
+                <Button variant="outline" size="sm">
+                  View All
+                </Button>
+              </Link>
+            </div>
+
+            <div className="match-card">
+              <div className="space-y-4">
+                {topThreeScorers?.map((scorer, index) => (
+                  <div key={scorer.player.id} className="flex items-center space-x-4">
+                    <div className="w-8 h-8 flex items-center justify-center">
+                      <span className={`font-bold ${index === 0 ? 'text-gradient-gold' : 'text-muted-foreground'}`}>
+                        {scorer.rank}
+                      </span>
+                    </div>
+                    <img
+                      src={scorer.player.profile_photo_url || '/public/placeholder_player.png'}
+                      alt={scorer.player.name}
+                      className="w-12 h-12 object-contain border-border"
+                      onError={e => {
+                        const target = e.currentTarget;
+                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
+                          target.src = '/public/placeholder_player.png';
+                        }
+                      }}
+                    />
+                    <div className="flex-1">
+                      <div className="font-semibold text-foreground">{scorer.player.name}</div>
+                      <div className="text-xs text-muted-foreground">{scorer?.team?.short_name}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="font-bold text-foreground">{scorer.goals}</div>
+                      <div className="text-xs text-muted-foreground">goals</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
-    </div>
     </div>
   );
 };

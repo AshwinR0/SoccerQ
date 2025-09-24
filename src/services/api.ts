@@ -2,7 +2,7 @@ import { supabase } from '@/lib/supabaseClient';
 import { Team, Player, Match, Standing, TopScorer, GoldenGlove, Season } from '../types';
 // Fetch Seasons
 export const getSeasons = () =>
-  fetchData<Season[]>(supabase.from('seasons').select('*'));
+  fetchData<Season[]>(supabase.from('seasons').select('*').order('start_date', { ascending: true }));
 
 // Helper for type safety
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

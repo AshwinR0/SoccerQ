@@ -92,9 +92,16 @@ const Leaderboards = () => {
                   <div key={scorer.player.id} className="text-center">
                     <div className="relative inline-block mb-3">
                       <img
-                        src={scorer?.player?.profile_photo_url}
+                        src={scorer.player.profile_photo_url || '/public/placeholder_player.png'}
                         alt={scorer.player.name}
                         className="w-32 h-32 object-contain mx-auto"
+                        onError={e => {
+                        const target = e.currentTarget;
+                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
+                          target.src = '/public/placeholder_player.png';
+                        }
+                      }}
+                        
                       />
                       <div className="absolute top-5 right-2 text-2xl">
                         {getRankIcon(scorer.rank)}
@@ -137,9 +144,15 @@ const Leaderboards = () => {
                     </div>
 
                     <img
-                      src={scorer.player.profile_photo_url}
+                      src={scorer.player.profile_photo_url || '/public/placeholder_player.png'}
                       alt={scorer.player.name}
                       className="w-14 h-14 object-contain"
+                      onError={e => {
+                        const target = e.currentTarget;
+                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
+                          target.src = '/public/placeholder_player.png';
+                        }
+                      }}
                     />
 
                     <div className="flex-1">
@@ -188,9 +201,15 @@ const Leaderboards = () => {
                     </div>
 
                     <img
-                      src={player.player.profile_photo_url}
+                      src={player.player.profile_photo_url || '/public/placeholder_player.png'}
                       alt={player.player.name}
                       className="w-20 h-20 object-contain"
+                      onError={e => {
+                        const target = e.currentTarget;
+                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
+                          target.src = '/public/placeholder_player.png';
+                        }
+                      }}
                     />
 
                     <div className="flex-1">
@@ -247,9 +266,15 @@ const Leaderboards = () => {
                     </div>
 
                     <img
-                      src={keeper.player.profile_photo_url}
+                      src={keeper.player.profile_photo_url || '/public/placeholder_player.png'}
                       alt={keeper?.player?.name}
                       className="w-16 h-16 object-contain"
+                      onError={e => {
+                        const target = e.currentTarget;
+                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
+                          target.src = '/public/placeholder_player.png';
+                        }
+                      }}
                     />
 
                     <div className="flex-1">

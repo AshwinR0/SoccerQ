@@ -59,11 +59,11 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
         </div>
 
         {/* Teams and Score */}
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 h-16">
           {/* Home Team */}
           <div className="flex items-center space-x-3 flex-1">
             <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs"
               style={{ backgroundColor: match.homeTeam.colors.primary }}
             >
               {match.homeTeam.short_name}
@@ -104,7 +104,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
               <div className="text-sm text-muted-foreground">{match.awayTeam.short_name}</div>
             </div>
             <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold"
+              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs"
               style={{ backgroundColor: match.awayTeam.colors.primary }}
             >
               {match.awayTeam.short_name}
