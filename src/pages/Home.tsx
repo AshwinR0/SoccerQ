@@ -1,14 +1,12 @@
 import MatchCard from "@/components/cards/MatchCard";
-import TeamCard from "@/components/cards/TeamCard";
-import PlayerCard from "@/components/cards/PlayerCard";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Calendar, Trophy, Users, TrendingUp } from "lucide-react";
+import { Calendar, Trophy, Users, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-stadium.jpg";
 import { useMatches } from "@/hooks/useSeasonHooks";
 import { useStandings } from "@/hooks/useSeasonHooks";
 import { useTopScorers } from "@/hooks/useSeasonHooks";
+import PlaceholderPlayerImg from "../assets/placeholder_player.png"
 
 const Home = () => {
   const { data: matches } = useMatches();
@@ -208,13 +206,13 @@ const Home = () => {
                       </span>
                     </div>
                     <img
-                      src={scorer.player.profile_photo_url || '/public/placeholder_player.png'}
+                      src={scorer.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={scorer.player.name}
                       className="w-12 h-12 object-contain border-border"
                       onError={e => {
                         const target = e.currentTarget;
-                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
-                          target.src = '/public/placeholder_player.png';
+                        if (target.src !== window.location.origin + PlaceholderPlayerImg) {
+                          target.src = PlaceholderPlayerImg;
                         }
                       }}
                     />

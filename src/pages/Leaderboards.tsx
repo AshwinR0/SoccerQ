@@ -5,6 +5,7 @@ import { useTopScorers } from "@/hooks/useSeasonHooks";
 import { useGoldenGlove } from '@/hooks/useSeasonHooks';
 import { usePlayers } from '@/hooks/useSeasonHooks';
 import { useTeams } from '@/hooks/useSeasonHooks';
+import PlaceholderPlayerImg from "../assets/placeholder_player.png"
 
 const Leaderboards = () => {
 
@@ -92,13 +93,13 @@ const Leaderboards = () => {
                   <div key={scorer.player.id} className="text-center">
                     <div className="relative inline-block mb-3">
                       <img
-                        src={scorer.player.profile_photo_url || '/public/placeholder_player.png'}
+                        src={scorer.player.profile_photo_url || PlaceholderPlayerImg}
                         alt={scorer.player.name}
                         className="w-32 h-32 object-contain mx-auto"
                         onError={e => {
                         const target = e.currentTarget;
-                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
-                          target.src = '/public/placeholder_player.png';
+                        if (target.src !== window.location.origin + PlaceholderPlayerImg) {
+                          target.src = PlaceholderPlayerImg;
                         }
                       }}
                         
@@ -144,13 +145,13 @@ const Leaderboards = () => {
                     </div>
 
                     <img
-                      src={scorer.player.profile_photo_url || '/public/placeholder_player.png'}
+                      src={scorer.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={scorer.player.name}
                       className="w-14 h-14 object-contain"
                       onError={e => {
                         const target = e.currentTarget;
-                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
-                          target.src = '/public/placeholder_player.png';
+                        if (target.src !== window.location.origin + PlaceholderPlayerImg) {
+                          target.src = PlaceholderPlayerImg;
                         }
                       }}
                     />
@@ -201,13 +202,13 @@ const Leaderboards = () => {
                     </div>
 
                     <img
-                      src={player.player.profile_photo_url || '/public/placeholder_player.png'}
+                      src={player.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={player.player.name}
                       className="w-20 h-20 object-contain"
                       onError={e => {
                         const target = e.currentTarget;
-                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
-                          target.src = '/public/placeholder_player.png';
+                        if (target.src !== window.location.origin + PlaceholderPlayerImg) {
+                          target.src = PlaceholderPlayerImg;
                         }
                       }}
                     />
@@ -266,13 +267,13 @@ const Leaderboards = () => {
                     </div>
 
                     <img
-                      src={keeper.player.profile_photo_url || '/public/placeholder_player.png'}
+                      src={keeper.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={keeper?.player?.name}
                       className="w-16 h-16 object-contain"
                       onError={e => {
                         const target = e.currentTarget;
-                        if (target.src !== window.location.origin + '/public/placeholder_player.png') {
-                          target.src = '/public/placeholder_player.png';
+                        if (target.src !== window.location.origin + PlaceholderPlayerImg) {
+                          target.src = PlaceholderPlayerImg;
                         }
                       }}
                     />

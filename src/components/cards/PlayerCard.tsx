@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Player } from '@/types';
 import { Target, Users, Shield, Award } from 'lucide-react';
+import PlaceholderPlayerImg from "../../assets/placeholder_player.png"
 
 interface PlayerCardProps {
   player: Player;
@@ -48,13 +49,13 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
         <div className="flex items-center space-x-4 mb-4">
           <div className="relative">
             <img
-              src={player.profile_photo_url || '/public/placeholder_player.png'}
+              src={player.profile_photo_url || PlaceholderPlayerImg}
               alt={player.name}
               className="w-48 h-60 object-contain"
               onError={e => {
                 const target = e.currentTarget;
-                if (target.src !== window.location.origin + '/public/placeholder_player.png') {
-                  target.src = '/public/placeholder_player.png';
+                if (target.src !== window.location.origin + PlaceholderPlayerImg) {
+                  target.src = PlaceholderPlayerImg;
                 }
               }}
             />
