@@ -6,6 +6,7 @@ import {
   getMatchesBySeason,
   getStandingsBySeason,
   getTopScorersBySeason,
+  getTopAssistersBySeason,
   getGoldenGloveBySeason,
 } from '@/services/api';
 
@@ -57,6 +58,15 @@ export const useTopScorers = () => {
   return useSupabaseQuery({
     queryKey: seasonId,
     queryFn: getTopScorersBySeason,
+  });
+};
+
+// Hook to fetch only top scorers
+export const useTopAssisters = () => {
+  const seasonId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: seasonId,
+    queryFn: getTopAssistersBySeason,
   });
 };
 

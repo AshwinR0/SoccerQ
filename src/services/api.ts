@@ -18,7 +18,7 @@ export const getTeamsBySeason = (seasonId: string) =>
 
 // Fetch Players
 export const getPlayersBySeason = (seasonId: string) =>
-  fetchData<Player[]>(supabase.from('players').select('*').eq('season_id', seasonId));
+  fetchData<Player[]>(supabase.from('player_details').select('*').eq('season_id', seasonId));
 
 // Fetch Matches
 export const getMatchesBySeason = (seasonId: string) =>
@@ -44,9 +44,19 @@ export const getTopScorersBySeason = (seasonId: string) =>
   fetchData<TopScorer[]>(
     supabase
       .from('top_scorers')
-      .select('*, player:players!player_id(*, team:teams!team_id(*))')
-      .eq('season_id', seasonId)
+      .select('*, player:player_details!player_id(*, team:teams!team_id(*))')
+      .eq('season_id', seasonId).gt('goals', 0)
       .order('rank', { ascending: true })
+  );
+
+// Fetch Top Scorers
+export const getTopAssistersBySeason = (seasonId: string) =>
+  fetchData<TopScorer[]>(
+    supabase
+      .from('top_scorers')
+      .select('*, player:player_details!player_id(*, team:teams!team_id(*))')
+      .eq('season_id', seasonId).gt('assists', 0)
+      .order('assists', { ascending: false })
   );
 
 // Fetch Golden Glove
@@ -54,7 +64,7 @@ export const getGoldenGloveBySeason = (seasonId: string) =>
   fetchData<GoldenGlove[]>(
     supabase
       .from('golden_gloves')
-      .select('*, player:players!player_id(*, team:teams!team_id(*))')
-      .eq('season_id', seasonId)
+      .select('*, player:player_details!player_id(*, team:teams!team_id(*))')
+      .eq('season_id', seasonId).gt('saves', 0)
       .order('rank', { ascending: true })
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, 
@@ -25,6 +25,11 @@ const Navigation = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
   };
+  
+  useEffect(() => {
+    toggleDarkMode()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navItems = [
     { path: '/', icon: Home, label: 'Home' },

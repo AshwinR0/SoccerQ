@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import { Target, Shield, Award, TrendingUp, FileQuestionIcon, Hand, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useTopScorers } from "@/hooks/useSeasonHooks";
-import { useGoldenGlove } from '@/hooks/useSeasonHooks';
-import { usePlayers } from '@/hooks/useSeasonHooks';
-import { useTeams } from '@/hooks/useSeasonHooks';
+import { useTopScorers, useGoldenGlove, usePlayers, useTeams, useTopAssisters } from "@/hooks/useSeasonHooks";
 import PlaceholderPlayerImg from "../assets/placeholder_player.png"
 
 const Leaderboards = () => {
@@ -13,6 +10,7 @@ const Leaderboards = () => {
   const { data: goldenGlove } = useGoldenGlove();
   const { data: teams } = useTeams();
   const { data: players } = usePlayers();
+  const { data: topAssisters } = useTopAssisters();
 
   type TabKey = 'scorers' | 'assists' | 'keepers';
   const [activeTab, setActiveTab] = useState<TabKey>('scorers');
@@ -33,6 +31,8 @@ const Leaderboards = () => {
       assists: player.assists,
       goals: player.goals
     }));
+
+  console.log(assistsLeaderboard)
 
   const getRankStyle = (rank: number) => {
     if (rank === 1) return 'text-gradient-gold';
@@ -190,9 +190,9 @@ const Leaderboards = () => {
               <p className="text-destructive-foreground text-sm">Players creating the most scoring opportunities</p>
             </div>
 
-            {assistsLeaderboard?.length > 0 ? <div className="p-4">
+            {topAssisters?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
-                {assistsLeaderboard?.map((player) => (
+                {topAssisters?.map((player) => (
                   <div key={player.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="w-8 h-8 flex items-center justify-center">
                       <span className={`font-bold ${getRankStyle(player.rank)}`}>
@@ -214,8 +214,8 @@ const Leaderboards = () => {
                     />
 
                     <div className="flex-1">
-                      <div className="font-semibold text-foreground">{player.player.name}</div>
-                      <div className="text-sm text-muted-foreground">{player.team.name} • {player.player.position}</div>
+                      <div className="font-semibold text-foreground">{player?.player?.name}</div>
+                      <div className="text-sm text-muted-foreground">{player?.team?.name} • {player.player.position}</div>
                     </div>
 
                     <div className="text-right">
