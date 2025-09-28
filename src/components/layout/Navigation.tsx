@@ -24,11 +24,18 @@ const Navigation = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     document.documentElement.classList.toggle('dark');
+    localStorage.setItem('theme', isDarkMode ? 'light' : 'dark');
   };
   
   useEffect(() => {
-    toggleDarkMode()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme === 'dark' || (!storedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    } else {
+      setIsDarkMode(false);
+      document.documentElement.classList.remove('dark');
+    }
   }, []);
 
   const navItems = [

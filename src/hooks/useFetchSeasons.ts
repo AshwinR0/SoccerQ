@@ -15,8 +15,17 @@ export const useFetchSeasons = () => {
         const fetchedSeasons = await getSeasons();
         setSeasons([...fetchedSeasons].reverse());
         const activeSeason = fetchedSeasons.reverse().find(season => season.isActive) || fetchedSeasons[0];
-        if (activeSeason) {
+        const storedSeason = localStorage.getItem('currentSeason');
+        if (storedSeason) {
+          const parsedSeason: Season = JSON.parse(storedSeason);
+          const validStoredSeason = fetchedSeasons.find(season => season.id === parsedSeason.id);
+          if (validStoredSeason) {
+            setCurrentSeason(validStoredSeason);
+            return;
+          }
+        } else if (activeSeason) {
           setCurrentSeason(activeSeason);
+          localStorage.setItem('currentSeason', JSON.stringify(activeSeason));
         }
         setError(null);
       } catch (err) {

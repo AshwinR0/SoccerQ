@@ -8,6 +8,7 @@ const SeasonSelector = () => {
     const selectedSeason = seasons.find(season => season.id === season_id);
     if (selectedSeason) {
       setCurrentSeason(selectedSeason);
+      localStorage.setItem('currentSeason', JSON.stringify(selectedSeason));
     }
   };
 

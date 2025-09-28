@@ -32,8 +32,6 @@ const Leaderboards = () => {
       goals: player.goals
     }));
 
-  console.log(assistsLeaderboard)
-
   const getRankStyle = (rank: number) => {
     if (rank === 1) return 'text-gradient-gold';
     if (rank === 2) return 'text-accent';
