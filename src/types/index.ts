@@ -58,6 +58,7 @@ export interface Player {
   season_id: string;
   name: string;
   team_id: string;
+  player_id: string;
   position: 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward';
   jersey_number: number;
   dateOfBirth: string;

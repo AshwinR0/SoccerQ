@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Matches from "./pages/Matches";
 import Teams from "./pages/Teams";
 import Players from "./pages/Players";
+import Player from "./pages/Player";
 import Standings from "./pages/Standings";
 import Leaderboards from "./pages/Leaderboards";
 import NotFound from "./pages/NotFound";
@@ -32,6 +33,7 @@ const App = () => (
                 <Route path="/players" element={<Players />} />
                 <Route path="/standings" element={<Standings />} />
                 <Route path="/leaderboards" element={<Leaderboards />} />
+                <Route path="/players/:player_id" element={<Player />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

@@ -43,7 +43,7 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
   const PositionIcon = getPositionIcon(player.position);
   
   return (
-    <Link to={`/players/${player.id}`}>
+    <Link to={`/players/${player.player_id}`}>
       <div className="player-card cursor-pointer animate-fade-in h-full">
         {/* Player Header */}
         <div className="flex items-center space-x-4 mb-4">
