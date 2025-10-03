@@ -30,7 +30,7 @@ const Players = () => {
   const filteredAndSortedPlayers = useMemo(() => {
   return players?.filter(player => {
       const matchesSearch = player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        player.nationality.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        player.locality.toLowerCase().includes(searchQuery.toLowerCase()) ||
         teams.find(t => t.id === player.team_id)?.name.toLowerCase().includes(searchQuery.toLowerCase());
 
       const matchesPosition = positionFilter === 'all' || player.position === positionFilter;
@@ -97,7 +97,7 @@ const Players = () => {
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search players, teams, nationality..."
+              placeholder="Search players, teams, locality..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-10"

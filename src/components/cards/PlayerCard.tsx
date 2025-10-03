@@ -117,8 +117,8 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
         {/* Player Info */}
         <div className="space-y-2 text-sm">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground">Nationality:</span>
-            <span className="text-foreground font-medium">{player.nationality}</span>
+            <span className="text-muted-foreground">Locality:</span>
+            <span className="text-foreground font-medium">{player.locality}</span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Minutes:</span>

@@ -62,7 +62,7 @@ export interface Player {
   position: 'Goalkeeper' | 'Defender' | 'Midfielder' | 'Forward';
   jersey_number: number;
   dateOfBirth: string;
-  nationality: string;
+  locality: string;
   goals: number;
   assists: number;
   saves?: number;

@@ -145,7 +145,7 @@ const Home = () => {
         </section>
 
         {/* League Leaders */}
-        <div className="grid gap-8 lg:grid-cols-2">
+        <div className="grid gap-16 lg:grid-cols-2">
           {/* Top Teams */}
           <section>
             <div className="flex items-center justify-between mb-6">
