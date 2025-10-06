@@ -62,11 +62,10 @@ const Leaderboards = () => {
               key={tab.key}
               variant={activeTab === tab.key ? "default" : "ghost"}
               onClick={() => setActiveTab(tab.key)}
-              // onClick={() => setActiveTab(tab.key as any)}
-              className="flex items-center space-x-2"
+              className="flex items-center gap-0 px-2 md:px-3 py-1 md:py-2"
             >
-              <tab.icon className="h-4 w-4" />
-              <span>{tab.label}</span>
+              <tab.icon className="h-3 w-3 md:h-4 md:w-4" />
+              <span className="text-sx md:text-base m-px">{tab.label}</span>
             </Button>
           ))}
         </div>
