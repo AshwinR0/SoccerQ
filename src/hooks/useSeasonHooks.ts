@@ -8,6 +8,8 @@ import {
   getTopScorersBySeason,
   getTopAssistersBySeason,
   getGoldenGloveBySeason,
+  getPlayerSummary,
+  getCareerHistory,
 } from '@/services/api';
 
 // A helper to get the current season ID
@@ -76,5 +78,23 @@ export const useGoldenGlove = () => {
   return useSupabaseQuery({
     queryKey: seasonId,
     queryFn: getGoldenGloveBySeason,
+  });
+};
+
+// Hook to fetch only players
+export const usePlayerSummary = (player_id: string) => {
+  // const seasoplanId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: player_id,
+    queryFn: getPlayerSummary,
+  });
+};
+
+// Hook to fetch only players
+export const useCareerHistory = (player_id: string) => {
+  // const seasoplanId = useCurrentSeasonId();
+  return useSupabaseQuery({
+    queryKey: player_id,
+    queryFn: getCareerHistory,
   });
 };

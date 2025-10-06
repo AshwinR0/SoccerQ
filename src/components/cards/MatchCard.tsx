@@ -39,7 +39,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
   };
 
   return (
-    <Link to={`/matches/${match.id}`}>
+    // <Link to={`/matches/${match.id}`}>
       <div className={`${featured ? 'match-card-featured' : 'match-card'} cursor-pointer animate-fade-in h-full`}>
         {/* Match Header */}
         <div className="flex items-center justify-between mb-4">
@@ -63,7 +63,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
           {/* Home Team */}
           <div className="flex items-center space-x-3 flex-1">
             <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs"
+              className="w-10 h-10 min-w-[40px] rounded-full flex items-center justify-center text-white font-bold text-xs"
               style={{ backgroundColor: match.homeTeam.colors.primary }}
             >
               {match.homeTeam.short_name}
@@ -104,7 +104,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
               <div className="text-sm text-muted-foreground">{match.awayTeam.short_name}</div>
             </div>
             <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-xs"
+              className="w-10 h-10 min-w-[40px] rounded-full flex items-center justify-center text-white font-bold text-xs"
               style={{ backgroundColor: match.awayTeam.colors.primary }}
             >
               {match.awayTeam.short_name}
@@ -146,7 +146,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
           </div>
         )}
       </div>
-    </Link>
+    // </Link>
   );
 };
 

@@ -75,6 +75,34 @@ export interface Player {
   red_cards: number;
 }
 
+export interface PlayerSummary {
+  date_of_birth: string;  
+  locality: string;
+  name: string;
+  position: string;
+  player_id: string;
+  total_appearances: number;
+  total_goals: number;
+  total_assists: number;
+  total_cleam_sheets: number;
+  total_minutes_played: number;
+  total_saves: number;
+}
+
+export interface CareerHistory {
+  name: string;
+  season_name: string;
+  team_name: string;
+  position: string;
+  jersey_number: number;
+  locality: string;
+  profile_photo_url: string;
+  appearances: number;
+  goals: number;
+  assists: number;
+  clean_sheets: number;
+}
+
 export interface Scorer {
   playerId: string;
   playerName: string;

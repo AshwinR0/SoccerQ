@@ -10,7 +10,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
   const winPercentage = team.played > 0 ? Math.round((team.wins / team.played) * 100) : 0;
 
   return (
-    <Link to={`/teams/${team.id}`}>
+    // <Link to={`/teams/${team.id}`}>
       <div className="team-card cursor-pointer animate-fade-in">
         {/* Team Header with Color Accent */}
         <div 
@@ -84,7 +84,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
           </div>
         </div>
       </div>
-    </Link>
+    // </Link>
   );
 };
 

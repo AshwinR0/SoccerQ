@@ -1,5 +1,5 @@
 import { supabase } from '@/lib/supabaseClient';
-import { Team, Player, Match, Standing, TopScorer, GoldenGlove, Season } from '../types';
+import { Team, Player, Match, Standing, TopScorer, GoldenGlove, Season, PlayerSummary, CareerHistory } from '../types';
 // Fetch Seasons
 export const getSeasons = () =>
   fetchData<Season[]>(supabase.from('seasons').select('*').order('start_date', { ascending: true }));
@@ -15,6 +15,20 @@ async function fetchData<T>(query: any): Promise<T> {
 // Fetch Teams
 export const getTeamsBySeason = (seasonId: string) =>
   fetchData<Team[]>(supabase.from('teams').select('*').eq('season_id', seasonId));
+
+// Fetch Player Summary
+export const getPlayerSummary = (player_id: string) =>
+  fetchData<PlayerSummary[]>(supabase.from('player_summary').select('*').eq('player_id', player_id));
+
+// Fetch Player Summary
+export const getCareerHistory = (player_id: string) =>
+  fetchData<CareerHistory[]>(
+    supabase
+      .from('player_details')
+      .select('name, season_name, team_name, position, jersey_number, locality, profile_photo_url, goals, assists, saves, clean_sheets, appearances')
+      .eq('player_id', player_id)
+      .order('season_id', { ascending: false })
+  );
 
 // Fetch Players
 export const getPlayersBySeason = (seasonId: string) =>
