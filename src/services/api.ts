@@ -25,7 +25,7 @@ export const getCareerHistory = (player_id: string) =>
   fetchData<CareerHistory[]>(
     supabase
       .from('player_details')
-      .select('name, season_name, team_name, position, jersey_number, locality, profile_photo_url, goals, assists, saves, clean_sheets, appearances')
+      .select('name, season_name, team_name, position, jersey_number, locality, profile_photo_url, goals, assists, saves, clean_sheets, saves, appearances')
       .eq('player_id', player_id)
       .order('season_id', { ascending: false })
   );

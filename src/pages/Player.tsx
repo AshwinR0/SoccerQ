@@ -85,18 +85,37 @@ const Player = () => {
               </div>
               <div className="text-xs text-muted-foreground">Appearances</div>
             </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-foreground">
-                {summary?.total_goals}
-              </div>
-              <div className="text-xs text-muted-foreground">Goals</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-foreground">
-                {summary?.total_assists}
-              </div>
-              <div className="text-xs text-muted-foreground">Assists</div>
-            </div>
+            {player?.position === 'Goalkeeper' ? (
+              <>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-foreground">
+                    {summary?.total_cleam_sheets ?? ((summary as unknown as Record<string, unknown>)['total_clean_sheets'] as number) ?? 0}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Clean Sheets</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-foreground">
+                    {summary?.total_saves ?? 0}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Saves</div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-foreground">
+                    {summary?.total_goals}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Goals</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-foreground">
+                    {summary?.total_assists}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Assists</div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 

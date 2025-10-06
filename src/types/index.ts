@@ -101,6 +101,7 @@ export interface CareerHistory {
   goals: number;
   assists: number;
   clean_sheets: number;
+  saves: number;
 }
 
 export interface Scorer {
