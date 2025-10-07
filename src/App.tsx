@@ -14,6 +14,7 @@ import Standings from "./pages/Standings";
 import Leaderboards from "./pages/Leaderboards";
 import NotFound from "./pages/NotFound";
 import Footer from "./components/layout/Footer";
+import TeamPage from "./pages/Team";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,7 @@ const App = () => (
                 <Route path="/standings" element={<Standings />} />
                 <Route path="/leaderboards" element={<Leaderboards />} />
                 <Route path="/player/:player_id" element={<Player />} />
+                <Route path="/team/:team_id" element={<TeamPage />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

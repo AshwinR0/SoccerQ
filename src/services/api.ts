@@ -27,8 +27,7 @@ export const getCareerHistory = (player_id: string) =>
       .from('player_details')
       .select('name, season_name, team_name, position, jersey_number, locality, profile_photo_url, goals, assists, saves, clean_sheets, saves, appearances')
       .eq('player_id', player_id)
-      .order('season_id', { ascending: false })
-  );
+      .order('season_id', { ascending: false }));
 
 // Fetch Players
 export const getPlayersBySeason = (seasonId: string) =>
@@ -41,6 +40,7 @@ export const getMatchesBySeason = (seasonId: string) =>
       .from('matches')
       .select('*, homeTeam:teams!home_team_id(*), awayTeam:teams!away_team_id(*)')
       .eq('season_id', seasonId)
+      .order('id', { ascending: true })
   );
 
 // Fetch Standings
