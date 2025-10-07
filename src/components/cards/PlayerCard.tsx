@@ -120,10 +120,10 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
             <span className="text-muted-foreground">Locality:</span>
             <span className="text-foreground font-medium">{player.locality}</span>
           </div>
-          <div className="flex items-center justify-between">
+          {/* <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Minutes:</span>
             <span className="text-foreground font-medium">{player.minutesPlayed}'</span>
-          </div>
+          </div> */}
         </div>
 
         {/* Cards Record */}
