@@ -94,6 +94,20 @@ const Matches = () => {
         </section>
       )}
 
+      {/* Completed Matches */}
+      {completedMatches?.length > 0 && (selectedFilter === 'all' || selectedFilter === 'Completed') && (
+        <section>
+          <h2 className="text-xl font-bold text-foreground mb-4">
+            Recent Results ({completedMatches.length})
+          </h2>
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {completedMatches?.map(match => (
+              <MatchCard key={match.id} match={match} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Upcoming Matches */}
       {upcomingMatches?.length > 0 && (selectedFilter === 'all' || selectedFilter === 'Upcoming') && (
         <section>
@@ -103,20 +117,6 @@ const Matches = () => {
           </h2>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {upcomingMatches?.map(match => (
-              <MatchCard key={match.id} match={match} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Completed Matches */}
-      {completedMatches?.length > 0 && (selectedFilter === 'all' || selectedFilter === 'Completed') && (
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            Recent Results ({completedMatches.length})
-          </h2>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {completedMatches?.map(match => (
               <MatchCard key={match.id} match={match} />
             ))}
           </div>

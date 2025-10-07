@@ -13,6 +13,7 @@ import Player from "./pages/Player";
 import Standings from "./pages/Standings";
 import Leaderboards from "./pages/Leaderboards";
 import NotFound from "./pages/NotFound";
+import Footer from "./components/layout/Footer";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
+            <Footer />
           </div>
         </BrowserRouter>
       </SeasonProvider>
