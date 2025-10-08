@@ -14,7 +14,7 @@ const Home = () => {
   const { data: topScorers } = useTopScorers();
 
   const upcomingMatches = matches?.filter(m => m.status === 'Upcoming').slice(0, 3);
-  const recentMatches = matches?.filter(m => m.status === 'Completed').slice(0, 2);
+  const recentMatches = matches?.filter(m => m.status === 'Completed').slice(0, 3);
   const topTeams = standings?.slice(0, 4);
   const topThreeScorers = topScorers?.slice(0, 3);
 
@@ -23,25 +23,29 @@ const Home = () => {
       title: 'Total Matches',
       value: matches?.length,
       icon: Calendar,
-      color: 'text-primary'
+      color: 'text-primary',
+      link: '/matches'
     },
     {
       title: 'Teams',
       value: topTeams?.length,
       icon: Users,
-      color: 'text-accent'
+      color: 'text-accent',
+      link: '/teams'
     },
     {
       title: 'Goals Scored',
       value: standings?.reduce((total, team) => total + team.goals_for, 0),
       icon: TrendingUp,
-      color: 'text-success'
+      color: 'text-success',
+      link: '/leaderboards'
     },
     {
       title: 'Top Scorer Goals',
       value: topThreeScorers?.[0]?.goals || 0,
       icon: Trophy,
-      color: 'text-warning'
+      color: 'text-warning',
+      link: '/leaderboards'
     }
   ];
 
@@ -88,11 +92,31 @@ const Home = () => {
         <section>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {stats.map((stat) => (
+              <Link to={stat.link} key={stat.title}>
               <div key={stat.title} className="match-card text-center">
                 <stat.icon className={`h-8 w-8 ${stat.color} mx-auto mb-2`} />
                 <div className="text-2xl font-bold text-foreground">{stat.value}</div>
                 <div className="text-sm text-muted-foreground">{stat.title}</div>
               </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* Recent Results */}
+        <section>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-foreground">Recent Results</h2>
+            <Link to="/matches?filter=completed">
+              <Button variant="outline" size="sm">
+                View All Results
+              </Button>
+            </Link>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {recentMatches?.map((match) => (
+              <MatchCard key={match.id} match={match} />
             ))}
           </div>
         </section>
@@ -124,24 +148,6 @@ const Home = () => {
               <p className="text-muted-foreground">No upcoming matches scheduled</p>
             </div>
           )}
-        </section>
-
-        {/* Recent Results */}
-        <section>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-foreground">Recent Results</h2>
-            <Link to="/matches?filter=completed">
-              <Button variant="outline" size="sm">
-                View All Results
-              </Button>
-            </Link>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            {recentMatches?.map((match) => (
-              <MatchCard key={match.id} match={match} />
-            ))}
-          </div>
         </section>
 
         {/* League Leaders */}

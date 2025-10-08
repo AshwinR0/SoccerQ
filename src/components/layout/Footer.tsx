@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="mt-1 flex items-center justify-center space-x-4">
           {/* <a href="ashwinrevi10gmail.com" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground"> */}
             <Mail className="h-4 w-4" />
-            <span className="text-sm">ashwinrevi10gmail.com</span>
+            <span className="text-sm">ashwinrevi10@gmail.com</span>
           {/* </a> */}
           <a href="https://github.com/AshwinR0" target="_blank" rel="noreferrer" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground">
             <Github className="h-4 w-4" />
