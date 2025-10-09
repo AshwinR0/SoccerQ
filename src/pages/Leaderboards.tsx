@@ -124,13 +124,13 @@ const Leaderboards = () => {
             {topScorers?.length > 0 && <div className="p-4">
               <h3 className="font-semibold text-foreground mb-4">Complete Rankings</h3>
               <div className="space-y-3">
-                {topScorers?.map((scorer) => (
+                {topScorers?.map((scorer, index) => (
                   <div key={scorer.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(scorer.rank)}`}>
-                        {scorer.rank}
+                      <span className={`font-bold ${getRankStyle(index + 1)}`}>
+                        {index + 1}
                       </span>
-                      <span className="ml-1">{getRankIcon(scorer.rank)}</span>
+                      <span className="ml-1">{getRankIcon(index + 1)}</span>
                     </div>
 
                     <img
@@ -181,13 +181,13 @@ const Leaderboards = () => {
 
             {topAssisters?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
-                {topAssisters?.map((player) => (
+                {topAssisters?.map((player, index) => (
                   <div key={player.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(player.rank)}`}>
-                        {player.rank}
+                      <span className={`font-bold ${getRankStyle(index + 1)}`}>
+                        {index + 1}
                       </span>
-                      <span className="ml-1">{getRankIcon(player.rank)}</span>
+                      <span className="ml-1">{getRankIcon(index+1)}</span>
                     </div>
 
                     <img
