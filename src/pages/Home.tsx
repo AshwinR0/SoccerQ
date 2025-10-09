@@ -15,7 +15,7 @@ const Home = () => {
   const { data: topScorers, isLoading: topScorersLoading, error: topScorersError } = useTopScorers();
 
   const upcomingMatches = matches?.filter(m => m.status === 'Upcoming').slice(0, 3);
-  const recentMatches = matches?.filter(m => m.status === 'Completed').slice(0, 3);
+  const recentMatches = matches?.filter(m => m.status === 'Completed').reverse().slice(0, 3);
   const topTeams = standings?.slice(0, 4);
   const topThreeScorers = topScorers?.slice(0, 3);
 
@@ -118,7 +118,7 @@ const Home = () => {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {recentMatches?.map((match) => (
+            {recentMatches?.reverse().map((match) => (
               <MatchCard key={match.id} match={match} />
             ))}
           </div>

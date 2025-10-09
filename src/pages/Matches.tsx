@@ -98,7 +98,7 @@ const Matches = () => {
       )}
 
       {/* Completed Matches */}
-      {completedMatches?.length > 0 && (selectedFilter === 'all' || selectedFilter === 'Completed') && (
+      {completedMatches?.reverse().length > 0 && (selectedFilter === 'all' || selectedFilter === 'Completed') && (
         <section>
           <h2 className="text-xl font-bold text-foreground mb-4">
             Recent Results ({completedMatches.length})
