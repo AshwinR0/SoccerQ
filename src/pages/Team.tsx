@@ -2,6 +2,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useTeams, usePlayers } from '@/hooks/useSeasonHooks';
 import { Team, Player } from '@/types';
 import PlayerCard from '@/components/cards/PlayerCard';
+import Loader from '@/components/ui/Loader';
 
 const TeamPage = () => {
   const { team_id } = useParams<{ team_id: string}>();
@@ -9,7 +10,7 @@ const TeamPage = () => {
   const { data: teams, isLoading: teamsLoading, error: teamsError } = useTeams();
   const { data: players, isLoading: playersLoading, error: playersError } = usePlayers();
 
-  if (teamsLoading || playersLoading) return <div>Loading...</div>;
+  if (teamsLoading || playersLoading) return <Loader />;
   if (teamsError || playersError) return <div>Error loading data.</div>;
 
   const team = teams?.find((t: Team) => t.id === team_id);
@@ -22,6 +23,14 @@ const TeamPage = () => {
 
   return (
     <div className="team-page p-8 max-w-5xl mx-auto">
+      <div className="mb-6">
+        <span
+          className="text-muted-foreground text-base cursor-pointer hover:text-primary transition"
+          onClick={() => navigate('/teams')}
+        >
+          ← Back to teams
+        </span>
+      </div>
       <div className="mb-8">
         <h1 className="text-5xl text-center text-gradient-pitch font-extrabold mb-4">{team.name}</h1>
         <h2 className="text-2xl text-center text-muted-foreground mb-6">{team.coach}</h2>

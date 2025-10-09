@@ -1,18 +1,21 @@
-import { Link, useParams } from "react-router-dom";
-import { useCareerHistory, usePlayers, usePlayerSummary, useTeams } from "@/hooks/useSeasonHooks";
-import type { CareerHistory, PlayerSummary } from '@/types';
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useCareerHistory, usePlayerSummary } from "@/hooks/useSeasonHooks";
+import type { CareerHistory } from '@/types';
 import PlaceholderPlayerImg from "@/assets/placeholder_player.png";
 import { User } from "lucide-react";
+import Loader from "@/components/ui/Loader";
 
 const Player = () => {
   const params = useParams();
+  const navigate = useNavigate();
   const playerId = params.player_id || params.playerId;
-  const { data: playerSummary } = usePlayerSummary(playerId);
-  const { data: careerHistory } = useCareerHistory(playerId);
+  const { data: playerSummary, isLoading: playerSummaryLoading, error: playerSummaryError } = usePlayerSummary(playerId);
+  const { data: careerHistory, isLoading: careerHistoryLoading, error: careerHistoryError } = useCareerHistory(playerId);
   const player = careerHistory?.[0]
 
   const summary = playerSummary?.[0] ?? null;
 
+  if (playerSummaryLoading || careerHistoryLoading) return <Loader />;
 
   if (!player) {
     return (
@@ -41,10 +44,13 @@ const Player = () => {
     <div className="container mx-auto px-4 py-8 space-y-6 overflow-x-hidden box-border max-w-full">
       {/* Hero: player image and name */}
 
-      <div className="mb-4">
-        <Link to="/players" className="text-sm text-muted-foreground underline">
+      <div className="mb-6">
+        <span
+          className="text-muted-foreground text-base cursor-pointer hover:text-primary transition"
+          onClick={() => navigate('/players')}
+        >
           ← Back to players
-        </Link>
+        </span>
       </div>
 
       <div className="relative rounded-lg overflow-hidden">

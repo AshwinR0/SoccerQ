@@ -8,11 +8,12 @@ import { Player } from '@/types';
 
 import { usePlayers } from '@/hooks/useSeasonHooks';
 import { useTeams } from '@/hooks/useSeasonHooks';
+import Loader from '@/components/ui/Loader';
 
 const Players = () => {
 
-  const { data: teams } = useTeams();
-  const { data: players } = usePlayers();
+  const { data: teams, isLoading: teamsLoading, error: teamsError } = useTeams();
+  const { data: players, isLoading: playersLoading, error: playersError } = usePlayers();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [positionFilter, setPositionFilter] = useState<'all' | Player['position']>('all');
@@ -27,28 +28,30 @@ const Players = () => {
     { key: 'Goalkeeper' as const, label: 'Goalkeepers', icon: Hand }
   ];
 
-  const filteredAndSortedPlayers = useMemo(() => {
+const filteredAndSortedPlayers = useMemo(() => {
   return players?.filter(player => {
-      const matchesSearch = player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        player.locality.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        teams.find(t => t.id === player.team_id)?.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = player.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      player.locality.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      teams.find(t => t.id === player.team_id)?.name.toLowerCase().includes(searchQuery.toLowerCase());
 
-      const matchesPosition = positionFilter === 'all' || player.position === positionFilter;
-      return matchesSearch && matchesPosition;
-    })
-    .sort((a, b) => {
-      switch (sortBy) {
-        case 'name':
-          return a.name.localeCompare(b.name);
-        case 'goals':
-          return b.goals - a.goals;
-        case 'assists':
-          return b.assists - a.assists;
-        default:
-          return 0;
-      }
-    });
+    const matchesPosition = positionFilter === 'all' || player.position === positionFilter;
+    return matchesSearch && matchesPosition;
+  })
+  .sort((a, b) => {
+    switch (sortBy) {
+      case 'name':
+        return a.name.localeCompare(b.name);
+      case 'goals':
+        return b.goals - a.goals;
+      case 'assists':
+        return b.assists - a.assists;
+      default:
+        return 0;
+    }
+  });
 }, [players, teams, searchQuery, positionFilter, sortBy]);
+
+if (teamsLoading || playersLoading) return <Loader />;
 
   const totalPlayers = players?.length;
   const totalGoals = players?.reduce((sum, player) => sum + player.goals, 0);

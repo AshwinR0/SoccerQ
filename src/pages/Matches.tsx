@@ -7,12 +7,13 @@ import { Badge } from '@/components/ui/badge';
 import { Match } from '@/types';
 
 import { useMatches } from "@/hooks/useSeasonHooks";
+import Loader from '@/components/ui/Loader';
 
 const Matches = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedFilter, setSelectedFilter] = useState<'all' | Match['status']>('all');
 
-  const { data: matches } = useMatches();
+  const { data: matches, isLoading: matchesLoading, error: matchesError } = useMatches();
 
   const filters = [
     { key: 'all' as const, label: 'All Matches', count: matches?.length },
@@ -35,6 +36,8 @@ const Matches = () => {
   const upcomingMatches = filteredMatches?.filter(m => m.status === 'Upcoming');
   const completedMatches = filteredMatches?.filter(m => m.status === 'Completed');
   const liveMatches = filteredMatches?.filter(m => m.status === 'Live');
+
+  if (matchesLoading) return <Loader />;
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">

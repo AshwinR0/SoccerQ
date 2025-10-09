@@ -3,14 +3,15 @@ import { Target, Shield, Award, TrendingUp, FileQuestionIcon, Hand, Zap } from '
 import { Button } from '@/components/ui/button';
 import { useTopScorers, useGoldenGlove, usePlayers, useTeams, useTopAssisters } from "@/hooks/useSeasonHooks";
 import PlaceholderPlayerImg from "../assets/placeholder_player.png"
+import Loader from '@/components/ui/Loader';
 
 const Leaderboards = () => {
 
-  const { data: topScorers } = useTopScorers();
-  const { data: goldenGlove } = useGoldenGlove();
-  const { data: teams } = useTeams();
-  const { data: players } = usePlayers();
-  const { data: topAssisters } = useTopAssisters();
+  const { data: topScorers, isLoading: topScorersLoading, error: topScorersError } = useTopScorers();
+  const { data: goldenGlove, isLoading: goldenGloveLoading, error: goldenGloveError } = useGoldenGlove();
+  const { data: teams, isLoading: teamsLoading, error: teamsError } = useTeams();
+  const { data: players, isLoading: playersLoading, error: playersError } = usePlayers();
+  const { data: topAssisters, isLoading: topAssistersLoading, error: topAssistersError } = useTopAssisters();
 
   type TabKey = 'scorers' | 'assists' | 'keepers';
   const [activeTab, setActiveTab] = useState<TabKey>('scorers');
@@ -20,17 +21,6 @@ const Leaderboards = () => {
     { key: 'assists', label: 'Most Assists', icon: Award },
     { key: 'keepers', label: 'Golden Glove', icon: Hand }
   ];
-
-  // Calculate assists leaderboard
-  const assistsLeaderboard = players?.filter(p => p.assists > 0)?.sort((a, b) => b.assists - a.assists)
-    ?.slice(0, 10)
-    ?.map((player, index) => ({
-      rank: index + 1,
-      player,
-      team: teams?.find(t => t.id === player.team_id),
-      assists: player.assists,
-      goals: player.goals
-    }));
 
   const getRankStyle = (rank: number) => {
     if (rank === 1) return 'text-gradient-gold';
@@ -45,6 +35,8 @@ const Leaderboards = () => {
     if (rank === 3) return '🥉';
     return '';
   };
+
+  if (teamsLoading || playersLoading || topScorersLoading || goldenGloveLoading || topAssistersLoading) return <Loader />;
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">
