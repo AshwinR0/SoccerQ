@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Trophy, TrendingUp, Target, Shield, FileQuestionIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useStandings } from "@/hooks/useSeasonHooks";
+import Loader from '@/components/ui/Loader';
 
 const Standings = () => {
-  const { data: standings } = useStandings();
+  const { data: standings, isLoading: standingsLoading, error: standingsError } = useStandings();
   const [view, setView] = useState<'table' | 'form'>('table');
 
   const getPositionStyle = (position: number) => {
@@ -19,6 +20,9 @@ const Standings = () => {
     if (position === 3) return '🥉';
     return '';
   };
+
+  if (standingsLoading) return <Loader />;
+
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">

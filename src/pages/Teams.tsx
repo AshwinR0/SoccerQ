@@ -4,12 +4,13 @@ import TeamCard from '@/components/cards/TeamCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useTeams } from '@/hooks/useSeasonHooks';
+import Loader from '@/components/ui/Loader';
 
 const Teams = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState<'points' | 'name' | 'goals'>('points');
 
-  const { data: teams } = useTeams();
+  const { data: teams,  isLoading: teamsLoading, error: teamsError } = useTeams();
 
   const filteredAndSortedTeams = teams?.filter(team =>
       team.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -33,6 +34,9 @@ const Teams = () => {
   const totalGoals = teams?.reduce((sum, team) => sum + team.goals_for, 0);
   const averageGoals = totalTeams ? Math.round((totalGoals / totalTeams) * 10) / 10 : 0;
   const topTeam = teams?.reduce((top, team) => team.points > top.points ? team : top, teams[0]);
+
+  if (teamsLoading) return <Loader />;
+
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">

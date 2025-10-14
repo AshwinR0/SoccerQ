@@ -3,14 +3,15 @@ import { Target, Shield, Award, TrendingUp, FileQuestionIcon, Hand, Zap } from '
 import { Button } from '@/components/ui/button';
 import { useTopScorers, useGoldenGlove, usePlayers, useTeams, useTopAssisters } from "@/hooks/useSeasonHooks";
 import PlaceholderPlayerImg from "../assets/placeholder_player.png"
+import Loader from '@/components/ui/Loader';
 
 const Leaderboards = () => {
 
-  const { data: topScorers } = useTopScorers();
-  const { data: goldenGlove } = useGoldenGlove();
-  const { data: teams } = useTeams();
-  const { data: players } = usePlayers();
-  const { data: topAssisters } = useTopAssisters();
+  const { data: topScorers, isLoading: topScorersLoading, error: topScorersError } = useTopScorers();
+  const { data: goldenGlove, isLoading: goldenGloveLoading, error: goldenGloveError } = useGoldenGlove();
+  const { data: teams, isLoading: teamsLoading, error: teamsError } = useTeams();
+  const { data: players, isLoading: playersLoading, error: playersError } = usePlayers();
+  const { data: topAssisters, isLoading: topAssistersLoading, error: topAssistersError } = useTopAssisters();
 
   type TabKey = 'scorers' | 'assists' | 'keepers';
   const [activeTab, setActiveTab] = useState<TabKey>('scorers');
@@ -20,17 +21,6 @@ const Leaderboards = () => {
     { key: 'assists', label: 'Most Assists', icon: Award },
     { key: 'keepers', label: 'Golden Glove', icon: Hand }
   ];
-
-  // Calculate assists leaderboard
-  const assistsLeaderboard = players?.filter(p => p.assists > 0)?.sort((a, b) => b.assists - a.assists)
-    ?.slice(0, 10)
-    ?.map((player, index) => ({
-      rank: index + 1,
-      player,
-      team: teams?.find(t => t.id === player.team_id),
-      assists: player.assists,
-      goals: player.goals
-    }));
 
   const getRankStyle = (rank: number) => {
     if (rank === 1) return 'text-gradient-gold';
@@ -45,6 +35,8 @@ const Leaderboards = () => {
     if (rank === 3) return '🥉';
     return '';
   };
+
+  if (teamsLoading || playersLoading || topScorersLoading || goldenGloveLoading || topAssistersLoading) return <Loader />;
 
   return (
     <div className="container mx-auto px-4 py-6 space-y-6 animate-fade-in">
@@ -132,13 +124,13 @@ const Leaderboards = () => {
             {topScorers?.length > 0 && <div className="p-4">
               <h3 className="font-semibold text-foreground mb-4">Complete Rankings</h3>
               <div className="space-y-3">
-                {topScorers?.map((scorer) => (
+                {topScorers?.map((scorer, index) => (
                   <div key={scorer.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(scorer.rank)}`}>
-                        {scorer.rank}
+                      <span className={`font-bold ${getRankStyle(index + 1)}`}>
+                        {index + 1}
                       </span>
-                      <span className="ml-1">{getRankIcon(scorer.rank)}</span>
+                      <span className="ml-1">{getRankIcon(index + 1)}</span>
                     </div>
 
                     <img
@@ -189,13 +181,13 @@ const Leaderboards = () => {
 
             {topAssisters?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
-                {topAssisters?.map((player) => (
+                {topAssisters?.map((player, index) => (
                   <div key={player.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(player.rank)}`}>
-                        {player.rank}
+                      <span className={`font-bold ${getRankStyle(index + 1)}`}>
+                        {index + 1}
                       </span>
-                      <span className="ml-1">{getRankIcon(player.rank)}</span>
+                      <span className="ml-1">{getRankIcon(index+1)}</span>
                     </div>
 
                     <img

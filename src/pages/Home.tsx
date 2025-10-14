@@ -7,14 +7,15 @@ import { useMatches } from "@/hooks/useSeasonHooks";
 import { useStandings } from "@/hooks/useSeasonHooks";
 import { useTopScorers } from "@/hooks/useSeasonHooks";
 import PlaceholderPlayerImg from "../assets/placeholder_player.png"
+import Loader from "@/components/ui/Loader";
 
 const Home = () => {
-  const { data: matches } = useMatches();
-  const { data: standings } = useStandings();
-  const { data: topScorers } = useTopScorers();
+  const { data: matches, isLoading: matchesLoading, error: matchesError } = useMatches();
+  const { data: standings, isLoading: standingsLoading, error: standingsError } = useStandings();
+  const { data: topScorers, isLoading: topScorersLoading, error: topScorersError } = useTopScorers();
 
   const upcomingMatches = matches?.filter(m => m.status === 'Upcoming').slice(0, 3);
-  const recentMatches = matches?.filter(m => m.status === 'Completed').slice(0, 3);
+  const recentMatches = matches?.filter(m => m.status === 'Completed').reverse().slice(0, 3);
   const topTeams = standings?.slice(0, 4);
   const topThreeScorers = topScorers?.slice(0, 3);
 
@@ -48,6 +49,8 @@ const Home = () => {
       link: '/leaderboards'
     }
   ];
+
+  if (matchesLoading || standingsLoading || topScorersLoading) return <Loader />;
 
   return (
     <div className="animate-fade-in">
@@ -115,7 +118,7 @@ const Home = () => {
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {recentMatches?.map((match) => (
+            {recentMatches?.reverse().map((match) => (
               <MatchCard key={match.id} match={match} />
             ))}
           </div>
