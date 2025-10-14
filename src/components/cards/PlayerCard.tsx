@@ -84,6 +84,10 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
           {player.position === 'Goalkeeper' ? (
             <>
               <div className="text-center">
+                <div className="text-xl font-bold text-foreground">{player.appearances}</div>
+                <div className="text-xs text-muted-foreground">Apps</div>
+              </div>
+              <div className="text-center">
                 <div className="text-xl font-bold text-foreground">{player.saves || 0}</div>
                 <div className="text-xs text-muted-foreground">Saves</div>
               </div>
@@ -91,13 +95,13 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
                 <div className="text-xl font-bold text-foreground">{player.clean_sheets || 0}</div>
                 <div className="text-xs text-muted-foreground">Clean Sheets</div>
               </div>
+            </>
+          ) : (
+            <>
               <div className="text-center">
                 <div className="text-xl font-bold text-foreground">{player.appearances}</div>
                 <div className="text-xs text-muted-foreground">Apps</div>
               </div>
-            </>
-          ) : (
-            <>
               <div className="text-center">
                 <div className="text-xl font-bold text-foreground">{player.goals}</div>
                 <div className="text-xs text-muted-foreground">Goals</div>
@@ -105,10 +109,6 @@ const PlayerCard = ({ player, team }: PlayerCardProps) => {
               <div className="text-center">
                 <div className="text-xl font-bold text-foreground">{player.assists}</div>
                 <div className="text-xs text-muted-foreground">Assists</div>
-              </div>
-              <div className="text-center">
-                <div className="text-xl font-bold text-foreground">{player.appearances}</div>
-                <div className="text-xs text-muted-foreground">Apps</div>
               </div>
             </>
           )}

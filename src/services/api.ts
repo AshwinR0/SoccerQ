@@ -31,7 +31,7 @@ export const getCareerHistory = (player_id: string) =>
 
 // Fetch Players
 export const getPlayersBySeason = (seasonId: string) =>
-  fetchData<Player[]>(supabase.from('player_details').select('*').eq('season_id', seasonId));
+  fetchData<Player[]>(supabase.from('player_details').select('*').eq('season_id', seasonId).order('goals', { ascending: false }).order('assists', { ascending: false }).order('appearances', { ascending: false }));
 
 // Fetch Matches
 export const getMatchesBySeason = (seasonId: string) =>
