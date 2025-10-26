@@ -39,7 +39,6 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
   };
 
   return (
-    // <Link to={`/matches/${match.id}`}>
       // <div className={`${featured ? 'match-card-featured' : 'match-card'} cursor-pointer animate-fade-in h-full`}>
       //   {/* Match Header */}
       //   <div className="flex items-center justify-between mb-4">
@@ -146,6 +145,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
       //     </div>
       //   )}
       // </div>
+      <Link to={`/matches/${match.id}`}>
       <div className={`${featured ? 'match-card-featured' : 'match-card'} cursor-pointer animate-fade-in h-full`}>
   {/* Match Header */}
   <div className="flex items-center justify-between mb-3 flex-wrap text-sm text-muted-foreground">
@@ -221,7 +221,7 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
   </div>
 </div>
 
-    // </Link>
+    </Link>
   );
 };
 

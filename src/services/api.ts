@@ -33,6 +33,15 @@ export const getCareerHistory = (player_id: string) =>
 export const getPlayersBySeason = (seasonId: string) =>
   fetchData<Player[]>(supabase.from('player_details').select('*').eq('season_id', seasonId).order('goals', { ascending: false }).order('assists', { ascending: false }).order('appearances', { ascending: false }));
 
+// Fetch players by team id
+export const getPlayersByTeam = (teamId: string) =>
+  fetchData<Player[]>(
+    supabase
+      .from('player_details')
+      .select('*')
+      .eq('team_id', teamId)
+  );
+
 // Fetch Matches
 export const getMatchesBySeason = (seasonId: string) =>
   fetchData<Match[]>(
@@ -41,6 +50,36 @@ export const getMatchesBySeason = (seasonId: string) =>
       .select('*, homeTeam:teams!home_team_id(*), awayTeam:teams!away_team_id(*)')
       .eq('season_id', seasonId)
       .order('id', { ascending: true })
+  );
+
+// Fetch a single match by id
+export const getMatchById = (matchId: string) =>
+  fetchData<Match | null>(
+    supabase
+      .from('matches')
+      .select('*, homeTeam:teams!home_team_id(*), awayTeam:teams!away_team_id(*)')
+      .eq('id', matchId)
+      .single()
+  );
+
+// Fetch match events
+export const getMatchEvents = (matchId: string) =>
+  fetchData<unknown[]>(
+    supabase
+      .from('match_events')
+      .select('id, match_id, event, minute, is_penalty, player:player_profile(id, name)')
+      .eq('match_id', matchId)
+      .order('minute', { ascending: true })
+  );
+
+// Fetch match scorers
+export const getMatchScorers = (matchId: string) =>
+  fetchData<unknown[]>(
+    supabase
+      .from('match_scorers')
+      .select('id, match_id, minute, type, player:players(id, player_profile_id)')
+      .eq('match_id', matchId)
+      .order('minute', { ascending: true })
   );
 
 // Fetch Standings

@@ -7,6 +7,7 @@ import { SeasonProvider } from "./contexts/SeasonContext";
 import Navigation from "./components/layout/Navigation";
 import Home from "./pages/Home";
 import Matches from "./pages/Matches";
+import MatchDetails from "./pages/MatchDetails";
 import Teams from "./pages/Teams";
 import Players from "./pages/Players";
 import Player from "./pages/Player";
@@ -31,6 +32,7 @@ const App = () => (
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/matches" element={<Matches />} />
+                <Route path="/matches/:matchId" element={<MatchDetails />} />
                 <Route path="/teams" element={<Teams />} />
                 <Route path="/players" element={<Players />} />
                 <Route path="/standings" element={<Standings />} />
