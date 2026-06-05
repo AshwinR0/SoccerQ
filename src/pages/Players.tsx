@@ -154,7 +154,7 @@ if (teamsLoading || playersLoading) return <Loader />;
 
       {/* Players Grid */}
       {filteredAndSortedPlayers?.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 md:gap-6">
           {filteredAndSortedPlayers?.map((player, index) => (
             <div key={player.id} className="animate-scale-in" style={{ animationDelay: `${index * 0.1}s` }}>
               <PlayerCard player={player} team={teams?.find(t => t.id === player.team_id)} />
@@ -190,17 +190,17 @@ if (teamsLoading || playersLoading) return <Loader />;
       {filteredAndSortedPlayers?.length > 0 && positionFilter === 'all' && (
         <div className="match-card p-6">
           <h3 className="text-lg font-semibold text-foreground mb-4">Squad Breakdown</h3>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-4 gap-2 md:gap-4 lg:grid-cols-4">
             {positions?.slice(1)?.map((position) => {
               const count = players.filter(p => p.position === position.key).length;
               const percentage = Math.round((count / totalPlayers) * 100);
               
               return (
                 <div key={position.key} className="text-center">
-                  <position.icon className="h-8 w-8 text-primary mx-auto mb-2" />
-                  <div className="text-xl font-bold text-foreground">{count}</div>
-                  <div className="text-sm text-muted-foreground">{position.label}</div>
-                  <div className="text-xs text-muted-foreground">({percentage}%)</div>
+                  <position.icon className="h-5 w-5 md:h-8 md:w-8 text-primary mx-auto mb-1 md:mb-2" />
+                  <div className="text-sm md:text-xl font-bold text-foreground">{count}</div>
+                  <div className="text-[9px] md:text-sm text-muted-foreground truncate">{position.label}</div>
+                  <div className="text-[8px] md:text-xs text-muted-foreground">({percentage}%)</div>
                 </div>
               );
             })}

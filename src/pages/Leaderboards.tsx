@@ -76,15 +76,15 @@ const Leaderboards = () => {
             </div>
 
             {/* Top 3 Highlight */}
-            {topScorers?.length > 0 ? <div className="p-6 bg-gradient-to-br from-muted/30 to-muted/10">
-              <div className="grid md:grid-cols-3 gap-6">
+            {topScorers?.length > 0 ? <div className="p-4 md:p-6 bg-gradient-to-br from-muted/30 to-muted/10">
+              <div className="grid md:grid-cols-3 gap-4 md:gap-6">
                 {topScorers?.slice(0, 3).map((scorer) => (
                   <div key={scorer.player.id} className="text-center">
-                    <div className="relative inline-block mb-3">
+                    <div className="relative inline-block mb-1 md:mb-3">
                       <img
                         src={scorer.player.profile_photo_url || PlaceholderPlayerImg}
                         alt={scorer.player.name}
-                        className="w-32 h-32 object-contain mx-auto"
+                        className="w-24 h-24 md:w-32 md:h-32 object-contain mx-auto"
                         onError={e => {
                         const target = e.currentTarget;
                         if (target.src !== window.location.origin + PlaceholderPlayerImg) {
@@ -93,19 +93,19 @@ const Leaderboards = () => {
                       }}
                         
                       />
-                      <div className="absolute top-5 right-2 text-2xl">
+                      <div className="absolute top-2 md:top-5 right-0 md:right-2 text-xl md:text-2xl">
                         {getRankIcon(scorer.rank)}
                       </div>
                     </div>
-                    <h3 className={`text-xl font-bold ${getRankStyle(scorer.rank)}`}>
+                    <h3 className={`text-lg md:text-xl font-bold ${getRankStyle(scorer.rank)}`}>
                       #{scorer.rank}
                     </h3>
-                    <p className="font-semibold text-lg text-foreground">{scorer.player.name}</p>
-                    <p className="text-sm text-muted-foreground">{scorer?.team?.name}</p>
-                    <div className="mt-2 space-y-1">
-                      <div className="text-2xl font-bold text-foreground">{scorer.goals}</div>
-                      <div className="text-sm text-muted-foreground">Goals</div>
-                      <div className="text-sm text-muted-foreground">{scorer.assists} Assists</div>
+                    <p className="font-semibold text-base md:text-lg text-foreground">{scorer.player.name}</p>
+                    <p className="text-xs md:text-sm text-muted-foreground">{scorer?.team?.name}</p>
+                    <div className="mt-1 md:mt-2 space-y-0.5 md:space-y-1">
+                      <div className="text-xl md:text-2xl font-bold text-foreground">{scorer.goals}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground">Goals</div>
+                      <div className="text-xs md:text-sm text-muted-foreground">{scorer.assists} Assists</div>
                     </div>
                   </div>
                 ))}
@@ -125,18 +125,18 @@ const Leaderboards = () => {
               <h3 className="font-semibold text-foreground mb-4">Complete Rankings</h3>
               <div className="space-y-3">
                 {topScorers?.map((scorer, index) => (
-                  <div key={scorer.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(index + 1)}`}>
+                  <div key={scorer.player.id} className="flex items-center space-x-2 md:space-x-4 p-2 md:p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
+                      <span className={`font-bold text-sm md:text-base ${getRankStyle(index + 1)}`}>
                         {index + 1}
                       </span>
-                      <span className="ml-1">{getRankIcon(index + 1)}</span>
+                      <span className="ml-1 text-sm md:text-base">{getRankIcon(index + 1)}</span>
                     </div>
 
                     <img
                       src={scorer.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={scorer.player.name}
-                      className="w-14 h-14 object-contain"
+                      className="w-10 h-10 md:w-14 md:h-14 object-contain"
                       onError={e => {
                         const target = e.currentTarget;
                         if (target.src !== window.location.origin + PlaceholderPlayerImg) {
@@ -145,19 +145,19 @@ const Leaderboards = () => {
                       }}
                     />
 
-                    <div className="flex-1">
-                      <div className="font-semibold text-foreground">{scorer.player.name}</div>
-                      <div className="text-sm text-muted-foreground">{scorer?.team?.name} • {scorer.player.position}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm md:text-base text-foreground truncate">{scorer.player.name}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground truncate">{scorer?.team?.name} • {scorer.player.position}</div>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-xl font-bold text-foreground">{scorer.goals}</div>
-                      <div className="text-xs text-muted-foreground">goals</div>
+                    <div className="text-right shrink-0 ml-2">
+                      <div className="text-lg md:text-xl font-bold text-foreground">{scorer.goals}</div>
+                      <div className="text-[10px] md:text-xs text-muted-foreground">goals</div>
                     </div>
 
-                    <div className="text-right text-sm text-muted-foreground">
-                      <div>{scorer.assists} assists</div>
-                      <div>{scorer.player.appearances} apps</div>
+                    <div className="text-right text-[10px] md:text-sm text-muted-foreground shrink-0 ml-2 md:ml-4">
+                      <div>{scorer.assists} ast</div>
+                      <div>{scorer.player.appearances} app</div>
                     </div>
                   </div>
                 ))}
@@ -182,18 +182,18 @@ const Leaderboards = () => {
             {topAssisters?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
                 {topAssisters?.map((player, index) => (
-                  <div key={player.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(index + 1)}`}>
+                  <div key={player.player.id} className="flex items-center space-x-2 md:space-x-4 p-2 md:p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
+                      <span className={`font-bold text-sm md:text-base ${getRankStyle(index + 1)}`}>
                         {index + 1}
                       </span>
-                      <span className="ml-1">{getRankIcon(index+1)}</span>
+                      <span className="ml-1 text-sm md:text-base">{getRankIcon(index+1)}</span>
                     </div>
 
                     <img
                       src={player.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={player.player.name}
-                      className="w-20 h-20 object-contain"
+                      className="w-12 h-12 md:w-20 md:h-20 object-contain"
                       onError={e => {
                         const target = e.currentTarget;
                         if (target.src !== window.location.origin + PlaceholderPlayerImg) {
@@ -202,19 +202,19 @@ const Leaderboards = () => {
                       }}
                     />
 
-                    <div className="flex-1">
-                      <div className="font-semibold text-foreground">{player?.player?.name}</div>
-                      <div className="text-sm text-muted-foreground">{player?.team?.name} • {player.player.position}</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm md:text-base text-foreground truncate">{player?.player?.name}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground truncate">{player?.team?.name} • {player.player.position}</div>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-xl font-bold text-foreground">{player.assists}</div>
-                      <div className="text-xs text-muted-foreground">assists</div>
+                    <div className="text-right shrink-0 ml-2">
+                      <div className="text-lg md:text-xl font-bold text-foreground">{player.assists}</div>
+                      <div className="text-[10px] md:text-xs text-muted-foreground">assists</div>
                     </div>
 
-                    <div className="text-right text-sm text-muted-foreground">
-                      <div>{player.goals} goals</div>
-                      <div>{player.player.appearances} apps</div>
+                    <div className="text-right text-[10px] md:text-sm text-muted-foreground shrink-0 ml-2 md:ml-4">
+                      <div>{player.goals} gls</div>
+                      <div>{player.player.appearances} app</div>
                     </div>
                   </div>
                 ))}
@@ -247,18 +247,18 @@ const Leaderboards = () => {
             {goldenGlove?.length > 0 ? <div className="p-4">
               <div className="space-y-3">
                 {goldenGlove?.map((keeper) => (
-                  <div key={keeper.player.id} className="flex items-center space-x-4 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                    <div className="w-8 h-8 flex items-center justify-center">
-                      <span className={`font-bold ${getRankStyle(keeper.rank)}`}>
+                  <div key={keeper.player.id} className="flex items-center space-x-2 md:space-x-4 p-2 md:p-3 rounded-lg hover:bg-muted/50 transition-colors">
+                    <div className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center">
+                      <span className={`font-bold text-sm md:text-base ${getRankStyle(keeper.rank)}`}>
                         {keeper.rank}
                       </span>
-                      <span className="ml-1">{getRankIcon(keeper.rank)}</span>
+                      <span className="ml-1 text-sm md:text-base">{getRankIcon(keeper.rank)}</span>
                     </div>
 
                     <img
                       src={keeper.player.profile_photo_url || PlaceholderPlayerImg}
                       alt={keeper?.player?.name}
-                      className="w-16 h-16 object-contain"
+                      className="w-10 h-10 md:w-16 md:h-16 object-contain"
                       onError={e => {
                         const target = e.currentTarget;
                         if (target.src !== window.location.origin + PlaceholderPlayerImg) {
@@ -267,19 +267,19 @@ const Leaderboards = () => {
                       }}
                     />
 
-                    <div className="flex-1">
-                      <div className="font-semibold text-foreground">{keeper.player.name}</div>
-                      <div className="text-sm text-muted-foreground">{keeper?.team?.name} • Goalkeeper</div>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-sm md:text-base text-foreground truncate">{keeper.player.name}</div>
+                      <div className="text-xs md:text-sm text-muted-foreground truncate">{keeper?.team?.name} • GK</div>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-xl font-bold text-foreground">{keeper.saves}</div>
-                      <div className="text-xs text-muted-foreground">saves</div>
+                    <div className="text-right shrink-0 ml-2">
+                      <div className="text-lg md:text-xl font-bold text-foreground">{keeper.saves}</div>
+                      <div className="text-[10px] md:text-xs text-muted-foreground">saves</div>
                     </div>
 
-                    <div className="text-right text-sm text-muted-foreground">
-                      <div>{keeper.clean_sheets} clean sheets</div>
-                      <div>{keeper.player.appearances} apps</div>
+                    <div className="text-right text-[10px] md:text-sm text-muted-foreground shrink-0 ml-2 md:ml-4">
+                      <div>{keeper.clean_sheets} cs</div>
+                      <div>{keeper.player.appearances} app</div>
                     </div>
                   </div>
                 ))}
@@ -300,37 +300,37 @@ const Leaderboards = () => {
       {/* Stats Summary */}
       <div className="match-card p-6">
         <h3 className="text-lg font-semibold text-foreground mb-4">Tournament Statistics</h3>
-        <div className="grid gap-4 md:grid-cols-4">
+        <div className="grid grid-cols-4 gap-2 md:gap-4 lg:grid-cols-4">
           <div className="text-center">
-            <TrendingUp className="h-8 w-8 text-primary mx-auto mb-2" />
-            <div className="text-2xl font-bold text-foreground">
+            <TrendingUp className="h-5 w-5 md:h-8 md:w-8 text-primary mx-auto mb-1 md:mb-2" />
+            <div className="text-sm md:text-2xl font-bold text-foreground">
               {players?.reduce((sum, p) => sum + p.goals, 0)}
             </div>
-            <div className="text-sm text-muted-foreground">Total Goals</div>
+            <div className="text-[8px] md:text-sm text-muted-foreground leading-tight mt-0.5">Total Goals</div>
           </div>
 
           <div className="text-center">
-            <Award className="h-8 w-8 text-accent mx-auto mb-2" />
-            <div className="text-2xl font-bold text-foreground">
+            <Award className="h-5 w-5 md:h-8 md:w-8 text-accent mx-auto mb-1 md:mb-2" />
+            <div className="text-sm md:text-2xl font-bold text-foreground">
               {players?.reduce((sum, p) => sum + p.assists, 0)}
             </div>
-            <div className="text-sm text-muted-foreground">Total Assists</div>
+            <div className="text-[8px] md:text-sm text-muted-foreground leading-tight mt-0.5">Total Assists</div>
           </div>
 
           <div className="text-center">
-            <Shield className="h-8 w-8 text-success mx-auto mb-2" />
-            <div className="text-2xl font-bold text-foreground">
+            <Shield className="h-5 w-5 md:h-8 md:w-8 text-success mx-auto mb-1 md:mb-2" />
+            <div className="text-sm md:text-2xl font-bold text-foreground">
               {players?.filter(p => p.clean_sheets).reduce((sum, p) => sum + (p.clean_sheets || 0), 0)}
             </div>
-            <div className="text-sm text-muted-foreground">Clean Sheets</div>
+            <div className="text-[8px] md:text-sm text-muted-foreground leading-tight mt-0.5">Clean Sheets</div>
           </div>
 
           <div className="text-center">
-            <Target className="h-8 w-8 text-warning mx-auto mb-2" />
-            <div className="text-2xl font-bold text-foreground">
+            <Target className="h-5 w-5 md:h-8 md:w-8 text-warning mx-auto mb-1 md:mb-2" />
+            <div className="text-sm md:text-2xl font-bold text-foreground">
               {(Math.round((players?.reduce((sum, p) => sum + p.goals, 0) / players?.reduce((sum, p) => sum + p.appearances, 0)) * 100) / 100) || 0}
             </div>
-            <div className="text-sm text-muted-foreground">Goals per Game</div>
+            <div className="text-[8px] md:text-sm text-muted-foreground leading-tight mt-0.5">Goals / Game</div>
           </div>
         </div>
       </div>
