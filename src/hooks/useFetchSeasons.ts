@@ -14,7 +14,7 @@ export const useFetchSeasons = () => {
       try {
         const fetchedSeasons = await getSeasons();
         setSeasons([...fetchedSeasons].reverse());
-        const activeSeason = fetchedSeasons.reverse().find(season => season.isActive) || fetchedSeasons[0];
+        const activeSeason = fetchedSeasons.reverse().find(season => season.is_active) || fetchedSeasons[0];
         const storedSeason = localStorage.getItem('currentSeason');
         if (storedSeason) {
           const parsedSeason: Season = JSON.parse(storedSeason);

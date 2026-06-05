@@ -2,12 +2,15 @@ export interface Season {
   id: string;
   name: string;
   year: string;
-  startDate: string;
-  endDate: string;
-  isActive: boolean;
+  start_date: string;
+  end_date: string;
+  is_active: boolean;
+  type: 'LEAGUE' | 'LEAGUE_KNOCKOUT' | 'KNOCKOUT';
 }
 
 export interface Match {
+  away_penalty_score?: number | null;
+  home_penalty_score?: number | null;
   id: string;
   season_id: string;
   match_date: string;
@@ -76,7 +79,7 @@ export interface Player {
 }
 
 export interface PlayerSummary {
-  date_of_birth: string;  
+  date_of_birth: string;
   locality: string;
   name: string;
   position: string;
