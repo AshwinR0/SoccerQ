@@ -29,7 +29,20 @@ export interface Match {
   red_cards?: string[];
   attendance?: number;
   notes?: string;
+  match_events?: MatchEvent[];
 }
+
+export interface MatchEvent {
+  id: number;
+  match_id: string;
+  event: string;
+  minute: number;
+  team_id: string;
+  event_order: number;
+  player?: { id: string; name: string } | null;
+  assist_player?: { id: string; name: string } | null;
+}
+
 
 export interface Team {
   id: string;

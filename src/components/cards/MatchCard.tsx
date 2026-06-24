@@ -1,7 +1,79 @@
 import { Link } from 'react-router-dom';
 import { Calendar, MapPin, Users, Clock } from 'lucide-react';
-import { Match } from '@/types';
+import { Match, MatchEvent } from '@/types';
 import { Badge } from '@/components/ui/badge';
+
+const renderEventIcon = (event: string, side: 'left' | 'right') => {
+  const marginClass = side === 'left' ? 'mr-1.5' : 'ml-1.5';
+  switch (event) {
+    case 'Goal':
+      return <span className={`text-[11px] ${marginClass}`} title="Goal">⚽</span>;
+    case 'Penalty Goal':
+      return <span className={`text-[11px] ${marginClass}`} title="Penalty Goal">⚽ (P)</span>;
+    case 'Own Goal':
+      return <span className={`text-[11px] text-destructive ${marginClass}`} title="Own Goal">⚽ (OG)</span>;
+    case 'Yellow Card':
+      return (
+        <span
+          className={`inline-block w-2.5 h-3.5 bg-yellow-500 rounded-[2px] shadow-sm border border-yellow-600/30 shrink-0 ${side === 'left' ? 'mr-1.5' : 'ml-1.5'}`}
+          title="Yellow Card"
+        />
+      );
+    case 'Red Card':
+      return (
+        <span
+          className={`inline-block w-2.5 h-3.5 bg-red-500 rounded-[2px] shadow-sm border border-red-600/30 shrink-0 ${side === 'left' ? 'mr-1.5' : 'ml-1.5'}`}
+          title="Red Card"
+        />
+      );
+    case 'Penalty Miss':
+      return <span className={`text-[11px] text-muted-foreground ${marginClass}`} title="Penalty Miss">❌ (pen)</span>;
+    default:
+      return null;
+  }
+};
+
+const renderHomeEvent = (e: MatchEvent) => {
+  const showAssist = e.assist_player?.name && (e.event === 'Goal' || e.event === 'Penalty Goal');
+  const hasIcon = ['Goal', 'Penalty Goal', 'Own Goal', 'Yellow Card', 'Red Card', 'Penalty Miss'].includes(e.event);
+  return (
+    <div key={e.id} className="flex flex-col items-start min-w-0 w-full text-left">
+      <div className="flex items-center gap-1.5 text-xs text-muted-foreground w-full min-w-0">
+        {renderEventIcon(e.event, 'left')}
+        <span className="font-medium text-foreground truncate">
+          {e.player?.name || 'Unknown'}
+        </span>
+        <span className="text-[10px] font-semibold text-muted-foreground/80">{e.minute}'</span>
+      </div>
+      {showAssist && (
+        <span className={`text-[10px] text-muted-foreground/80 truncate max-w-full ${hasIcon ? 'pl-[22px]' : 'pl-4'}`}>
+          {e.assist_player?.name}
+        </span>
+      )}
+    </div>
+  );
+};
+
+const renderAwayEvent = (e: MatchEvent) => {
+  const showAssist = e.assist_player?.name && (e.event === 'Goal' || e.event === 'Penalty Goal');
+  const hasIcon = ['Goal', 'Penalty Goal', 'Own Goal', 'Yellow Card', 'Red Card', 'Penalty Miss'].includes(e.event);
+  return (
+    <div key={e.id} className="flex flex-col items-end min-w-0 w-full text-right">
+      <div className="flex items-center justify-end gap-1.5 text-xs text-muted-foreground w-full min-w-0">
+        <span className="text-[10px] font-semibold text-muted-foreground/80">{e.minute}'</span>
+        <span className="font-medium text-foreground truncate">
+          {e.player?.name || 'Unknown'}
+        </span>
+        {renderEventIcon(e.event, 'right')}
+      </div>
+      {showAssist && (
+        <span className={`text-[10px] text-muted-foreground/80 truncate max-w-full ${hasIcon ? 'pr-[22px]' : 'pr-4'}`}>
+          {e.assist_player?.name}
+        </span>
+      )}
+    </div>
+  );
+};
 
 interface MatchCardProps {
   match: Match;
@@ -38,9 +110,18 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
     }
   };
 
+  const homeEvents = match.match_events?.filter(e => e.team_id === match.homeTeam.id).sort((a, b) => a.minute - b.minute) || [];
+  const awayEvents = match.match_events?.filter(e => e.team_id === match.awayTeam.id).sort((a, b) => a.minute - b.minute) || [];
+  const hasEvents = homeEvents.length > 0 || awayEvents.length > 0;
+
+  const displayedHomeEvents = homeEvents.slice(0, 3);
+  const displayedAwayEvents = awayEvents.slice(0, 3);
+  const extraHomeEvents = homeEvents.length - displayedHomeEvents.length;
+  const extraAwayEvents = awayEvents.length - displayedAwayEvents.length;
+
   return (
     <Link to={`/matches/${match.id}`}>
-      <div className={`${featured ? 'match-card-featured' : 'match-card'} cursor-pointer animate-fade-in h-full`}>
+      <div className={`${featured ? 'match-card-featured' : 'match-card'} cursor-pointer animate-fade-in h-full flex flex-col`}>
         {/* Match Header */}
         <div className="flex items-center justify-between mb-3 flex-wrap gap-2 text-sm text-muted-foreground">
           <div className="flex items-center gap-2 flex-wrap">
@@ -110,8 +191,33 @@ const MatchCard = ({ match, featured = false }: MatchCardProps) => {
           </div>
         </div>
 
+        {/* Match Events */}
+        {hasEvents && (
+          <div className="grid grid-cols-2 gap-6 mb-4 text-xs text-muted-foreground border-t border-border/30 pt-3">
+            {/* Home Events */}
+            <div className="flex flex-col gap-2 min-w-0">
+              {displayedHomeEvents.map(renderHomeEvent)}
+              {extraHomeEvents > 0 && (
+                <span className="text-[10px] text-muted-foreground/60 pl-[22px] italic">
+                  + {extraHomeEvents} more
+                </span>
+              )}
+            </div>
+
+            {/* Away Events */}
+            <div className="flex flex-col gap-2 min-w-0">
+              {displayedAwayEvents.map(renderAwayEvent)}
+              {extraAwayEvents > 0 && (
+                <span className="text-[10px] text-muted-foreground/60 pr-[22px] italic">
+                  + {extraAwayEvents} more
+                </span>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Venue + Attendance */}
-        <div className="flex items-center justify-between text-xs sm:text-sm text-muted-foreground flex-wrap gap-y-1">
+        <div className="mt-auto pt-3 flex items-center justify-between text-xs sm:text-sm text-muted-foreground flex-wrap gap-y-1 border-t border-border/10">
           <div className="flex items-center space-x-1">
             <MapPin className="h-3.5 w-3.5" />
             <span className="truncate">{match.venue}</span>

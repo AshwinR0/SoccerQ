@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Match } from '@/types';
 import PlaceholderPlayerImg from '@/assets/placeholder_player.png';
@@ -57,8 +57,9 @@ const MatchDetails = () => {
         match_id: string;
         event: string;
         minute: number;
-        is_penalty?: boolean;
+        team_id: string;
         player?: { id: string; name?: string } | null;
+        assist_player?: { id: string; name?: string } | null;
     }
 
     interface MatchScorer {
@@ -85,13 +86,27 @@ const MatchDetails = () => {
                     player = { id: String(p['id'] as string | number), name: p['name'] as string | undefined };
                 }
             }
+
+            const assistRaw = rec['assist_player'];
+            let assist_player = null;
+            if (assistRaw) {
+                if (Array.isArray(assistRaw)) {
+                    const first = assistRaw[0] as Record<string, unknown> | undefined;
+                    if (first) assist_player = { id: String(first['id'] as string | number), name: first['name'] as string | undefined };
+                } else {
+                    const p = assistRaw as Record<string, unknown>;
+                    assist_player = { id: String(p['id'] as string | number), name: p['name'] as string | undefined };
+                }
+            }
+
             return {
                 id: Number(rec['id'] as number),
                 match_id: String(rec['match_id'] as string | number),
                 event: String(rec['event'] as string ?? ''),
                 minute: Number(rec['minute'] as number ?? 0),
-                is_penalty: rec['is_penalty'] as boolean | undefined,
+                team_id: String(rec['team_id'] as string ?? ''),
                 player,
+                assist_player,
             } as MatchEvent;
         });
     }, [rawEvents]);
@@ -119,6 +134,76 @@ const MatchDetails = () => {
             } as MatchScorer;
         });
     }, [rawScorers]);
+
+    const allPlayers = useMemo(() => {
+        const cast = (arr: unknown): Array<Record<string, unknown>> => (Array.isArray(arr) ? (arr as Array<Record<string, unknown>>) : []);
+        return [...cast(homePlayersRaw), ...cast(awayPlayersRaw)];
+    }, [homePlayersRaw, awayPlayersRaw]);
+
+    const findPlayerDetails = useCallback((profileId: string | undefined) => {
+        if (!profileId) return undefined;
+        return allPlayers.find(p => String(p['player_id'] || p['id']) === profileId);
+    }, [allPlayers]);
+
+    const processedEvents = useMemo(() => {
+        if (!match || !match.homeTeam || !match.awayTeam) return [];
+        let homeScore = 0;
+        let awayScore = 0;
+        
+        // Sort events chronologically to compute running scores
+        const sorted = [...events].sort((a, b) => a.minute - b.minute);
+
+        return sorted.map((e) => {
+            const isHome = e.team_id === match.home_team_id || e.team_id === match.homeTeam.id;
+            
+            // Determine score change
+            if (e.event === 'Goal' || e.event === 'Penalty Goal') {
+                if (isHome) homeScore++;
+                else awayScore++;
+            } else if (e.event === 'Own Goal') {
+                if (isHome) homeScore++;
+                else awayScore++;
+            }
+
+            const shortScoreStr = `${match.homeTeam.short_name} ${homeScore} - ${awayScore} ${match.awayTeam.short_name}`;
+
+            // Generate a natural commentary description
+            let description = '';
+            const playerName = e.player?.name || 'Unknown Player';
+            const assistName = e.assist_player?.name;
+            const teamName = isHome ? match.homeTeam.name : match.awayTeam.name;
+            const opponentTeamName = isHome ? match.awayTeam.name : match.homeTeam.name;
+
+            if (e.event === 'Goal') {
+                description = `${teamName} take the lead to make it ${homeScore} - ${awayScore} thanks to a clinical finish from ${playerName}.`;
+                if (assistName) {
+                    description += ` Beautifully set up by ${assistName}.`;
+                }
+                if (homeScore === awayScore) {
+                    description = `${playerName} equalizes for ${teamName} to make it ${homeScore} - ${awayScore}!`;
+                    if (assistName) description += ` Assisted by ${assistName}.`;
+                }
+            } else if (e.event === 'Penalty Goal') {
+                description = `${playerName} coolly converts from the penalty spot to make it ${homeScore} - ${awayScore} for ${teamName}.`;
+            } else if (e.event === 'Own Goal') {
+                description = `Disaster for ${opponentTeamName}! ${playerName} accidentally puts the ball into their own net, gifting a goal to ${teamName} (${homeScore} - ${awayScore}).`;
+            } else if (e.event === 'Yellow Card') {
+                description = `${playerName} receives a yellow card from the referee for a tactical foul.`;
+            } else if (e.event === 'Red Card') {
+                description = `Red card! ${playerName} is sent off for a serious challenge, leaving ${teamName} down to 10 men.`;
+            } else if (e.event === 'Penalty Miss') {
+                description = `Penalty missed! ${playerName} fails to convert from 12 yards, a huge letdown for ${teamName}.`;
+            }
+
+            return {
+                ...e,
+                homeScore,
+                awayScore,
+                shortScoreStr,
+                description
+            };
+        });
+    }, [events, match]);
 
     // Helpers for lineup rendering
     const parseFormation = (formation: string) => formation.split('-').map((s) => Number(s) || 0);
@@ -269,18 +354,144 @@ const MatchDetails = () => {
 
                 <div className="p-4">
                     {activeTab === 'timeline' && (
-                        <div>
-                            {events.length === 0 ? <div className="text-sm text-muted-foreground">No events</div> : (
-                                <div className="space-y-3">
-                                    {events.map((e: MatchEvent) => (
-                                        <div key={e.id} className="flex items-start space-x-3">
-                                            <div className="w-12 text-sm text-muted-foreground">{e.minute}'</div>
-                                            <div className="flex-1">
-                                                <div className="font-medium">{e.event}</div>
-                                                <div className="text-sm text-muted-foreground">{e.player?.name}</div>
+                        <div className="space-y-4 max-w-xl mx-auto py-2">
+                            {processedEvents.length === 0 ? (
+                                <div className="text-sm text-muted-foreground text-center py-8">No events recorded for this match.</div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {processedEvents.map((e) => {
+                                        const playerDetails = findPlayerDetails(e.player?.id);
+                                        const eventTeam = e.team_id === match.homeTeam.id ? match.homeTeam : match.awayTeam;
+                                        
+                                        // Check if it's a Goal/Penalty Goal/Own Goal
+                                        const isGoalEvent = e.event === 'Goal' || e.event === 'Penalty Goal' || e.event === 'Own Goal';
+                                        
+                                        // Header styling based on event type
+                                        let headerBg = '';
+                                        let headerText = '';
+                                        const avatarBorderColor = eventTeam.colors.primary;
+
+                                        if (e.event === 'Goal') {
+                                            headerBg = 'bg-gradient-to-r from-rose-600 to-rose-500 text-white';
+                                            headerText = 'GOOOAAALLL!!!';
+                                        } else if (e.event === 'Penalty Goal') {
+                                            headerBg = 'bg-gradient-to-r from-emerald-600 to-emerald-500 text-white';
+                                            headerText = 'PENALTY GOAL!!!';
+                                        } else if (e.event === 'Own Goal') {
+                                            headerBg = 'bg-gradient-to-r from-red-700 to-red-600 text-white';
+                                            headerText = 'OWN GOAL!!!';
+                                        } else if (e.event === 'Yellow Card') {
+                                            headerBg = 'bg-amber-500/10 text-amber-500 border-b border-amber-500/20';
+                                            headerText = 'YELLOW CARD';
+                                        } else if (e.event === 'Red Card') {
+                                            headerBg = 'bg-red-500/10 text-red-500 border-b border-red-500/20';
+                                            headerText = 'RED CARD';
+                                        } else if (e.event === 'Penalty Miss') {
+                                            headerBg = 'bg-muted text-muted-foreground border-b border-border';
+                                            headerText = 'PENALTY MISS';
+                                        }
+
+                                        const showAssist = e.assist_player?.name && (e.event === 'Goal' || e.event === 'Penalty Goal');
+                                        const playerPhoto = (playerDetails?.profile_photo_url as string) || PlaceholderPlayerImg;
+
+                                        return (
+                                            <div key={e.id} className="match-card p-0 overflow-hidden shadow-md animate-fade-in border border-border/60 rounded-lg">
+                                                {/* Header */}
+                                                {isGoalEvent ? (
+                                                    <div 
+                                                        className="p-4 flex flex-col items-center justify-center relative text-white"
+                                                        style={{ 
+                                                            background: `linear-gradient(135deg, ${eventTeam.colors.primary}, ${eventTeam.colors.secondary || eventTeam.colors.primary})` 
+                                                        }}
+                                                    >
+                                                        <div className="w-6 h-6 rounded-full bg-white flex items-center justify-center text-xs shadow-sm mb-1 text-black">
+                                                            ⚽
+                                                        </div>
+                                                        <div className="font-bold text-base tracking-wider text-center">{headerText}</div>
+                                                        <div className="text-xs font-semibold opacity-90">{e.minute}'</div>
+                                                    </div>
+                                                ) : (
+                                                    <div className={`${headerBg} p-3 px-4 flex items-center justify-between text-xs font-semibold`}>
+                                                        <div className="flex items-center gap-1.5">
+                                                            {e.event === 'Yellow Card' && (
+                                                                <span className="w-2.5 h-3.5 bg-yellow-500 rounded-[2px] border border-yellow-600/30 shadow-sm" />
+                                                            )}
+                                                            {e.event === 'Red Card' && (
+                                                                <span className="w-2.5 h-3.5 bg-red-500 rounded-[2px] border border-red-600/30 shadow-sm" />
+                                                            )}
+                                                            <span>{headerText}</span>
+                                                        </div>
+                                                        <div>{e.minute}'</div>
+                                                    </div>
+                                                )}
+
+                                                {/* Sub-header with running score for goals */}
+                                                {isGoalEvent && (
+                                                    <div 
+                                                        className="border-b border-border/20 py-2 px-4 text-center text-xs font-semibold text-foreground/90"
+                                                        style={{ 
+                                                            backgroundColor: eventTeam.colors.primary.startsWith('#') 
+                                                                ? `${eventTeam.colors.primary}15` 
+                                                                : 'rgba(0, 0, 0, 0.15)' 
+                                                        }}
+                                                    >
+                                                        <span className="opacity-90">{e.shortScoreStr}</span>
+                                                    </div>
+                                                )}
+
+                                                {/* Card Body */}
+                                                <div className="p-4 space-y-3">
+                                                    <div className="flex items-center justify-between gap-4">
+                                                        {/* Left side details */}
+                                                        <div className="space-y-1 min-w-0 flex-1">
+                                                            <div className="font-bold text-base text-foreground truncate">{e.player?.name || 'Unknown Player'}</div>
+                                                            <div className="flex items-center gap-1.5 text-xs text-muted-foreground flex-wrap">
+                                                                <span
+                                                                    className="w-4 h-4 rounded-full flex items-center justify-center text-white font-bold text-[8px] shrink-0"
+                                                                    style={{ backgroundColor: eventTeam.colors.primary }}
+                                                                >
+                                                                    {eventTeam.short_name}
+                                                                </span>
+                                                                <span className="truncate">{eventTeam.name}</span>
+                                                                <span>·</span>
+                                                                <span className="truncate">
+                                                                    {(playerDetails?.position as string) || 'Player'}{' '}
+                                                                    {playerDetails?.jersey_number ? `#${playerDetails.jersey_number}` : ''}
+                                                                </span>
+                                                            </div>
+                                                            {showAssist && (
+                                                                <div className="text-xs text-muted-foreground mt-1">
+                                                                    <span className="font-semibold text-foreground">Asst:</span> {e.assist_player?.name}
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* Right side player photo */}
+                                                        <div 
+                                                            className="relative w-12 h-12 rounded-full overflow-hidden border-2 shadow-sm bg-muted shrink-0"
+                                                            style={{ borderColor: avatarBorderColor }}
+                                                        >
+                                                            <img
+                                                                src={playerPhoto}
+                                                                alt={e.player?.name}
+                                                                className="w-full h-full object-cover"
+                                                                onError={(ev) => {
+                                                                    ev.currentTarget.src = PlaceholderPlayerImg;
+                                                                }}
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Commentary description */}
+                                                    {e.description && (
+                                                        <div className="text-xs sm:text-sm text-muted-foreground/80 leading-relaxed pt-2.5 border-t border-border/20">
+                                                            {e.description}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
